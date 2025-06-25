@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { users, adventurerStoreItems, currencyDefinitions } from "@/lib/data";
 import { ArrowLeft, ShoppingCart } from "lucide-react";
+import { UserPurse } from "@/components/marketplace/user-purse";
 
 export default function UserStallPage({ params }: { params: { userId: string } }) {
   const user = users.find(u => u.id === params.userId);
@@ -56,6 +57,8 @@ export default function UserStallPage({ params }: { params: { userId: string } }
         </div>
       </div>
       
+      <UserPurse />
+
       {userItems.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {userItems.map(item => {

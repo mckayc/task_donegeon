@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { marketplaceMarkets, inventoryItems, currencyDefinitions } from "@/lib/data";
 import { ArrowLeft, Lock } from "lucide-react";
 import { MarketItemCard } from "@/components/marketplace/market-item";
+import { UserPurse } from "@/components/marketplace/user-purse";
 
 export default function MarketPage({ params }: { params: { marketId: string } }) {
   const market = marketplaceMarkets.find(m => m.id === params.marketId);
@@ -52,6 +53,8 @@ export default function MarketPage({ params }: { params: { marketId: string } })
         </div>
       </div>
       
+      <UserPurse />
+
       {market.status === 'locked' ? (
         <Card className="flex flex-col items-center justify-center p-8 border-2 border-dashed">
             <Lock className="w-12 h-12 text-muted-foreground mb-4"/>
