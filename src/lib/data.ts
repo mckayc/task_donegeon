@@ -10,6 +10,14 @@ export interface CurrencyDefinition {
 
 export type TaskCategory = 'household' | 'learning' | 'creative' | 'outdoor' | 'health';
 
+export interface Guild {
+  id: string;
+  name: string;
+  memberIds: string[];
+  joinRestriction: 'open' | 'invite-only' | 'rank-restricted';
+  minRankId?: string;
+}
+
 export interface Task {
   id: string;
   title: string;
@@ -24,7 +32,8 @@ export interface Task {
   verification: {
     type: 'manual' | 'auto' | 'timed';
     delayMinutes?: number;
-  }
+  };
+  guildId?: string;
 }
 
 export interface MarketItem {
@@ -269,6 +278,17 @@ export const tasks: Task[] = [
     type: 'duty',
     verification: { type: 'auto' },
   },
+  {
+    id: 'guild-quest-1',
+    title: 'Defeat the Dust Bunny Broodmother',
+    description: 'A colossal dust bunny has taken residence under the grand sofa. The entire guild must work together to clean it out.',
+    category: 'household',
+    reward: { currencyName: 'Gold', amount: 500 },
+    status: 'active',
+    type: 'venture', // Guild quests are like ventures
+    verification: { type: 'manual' },
+    guildId: 'guild-1', // Assign to The Dawnbreakers
+  },
 ];
 
 export const inventoryItems: InventoryItem[] = [
@@ -465,4 +485,26 @@ export const adventurerStoreItems: AdventurerStoreItem[] = [
     cost: { currencyName: 'Gold', amount: 5 },
     approvalStatus: 'rejected',
   },
+];
+
+export const guilds: Guild[] = [
+  {
+    id: 'guild-1',
+    name: 'The Dawnbreakers',
+    memberIds: ['3', '4'],
+    joinRestriction: 'open',
+  },
+  {
+    id: 'guild-2',
+    name: 'The Shadow Syndicate',
+    memberIds: [],
+    joinRestriction: 'invite-only',
+  },
+  {
+    id: 'guild-3',
+    name: 'The Silver Vanguard',
+    memberIds: ['1', '2'],
+    joinRestriction: 'rank-restricted',
+    minRankId: 'rank-15'
+  }
 ];
