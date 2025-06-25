@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { Coins, Gem, Star, Award, Sword, Shield } from 'lucide-react';
+import { Coins, Gem, Star, Award, Sword, Shield, ScrollText, Banknote, FlaskConical, Brush, Map } from 'lucide-react';
 
 export interface Currency {
   name: string;
@@ -36,9 +36,14 @@ export interface Market {
   name: string;
   description: string;
   status: 'open' | 'locked';
-  unlocksAt?: number;
+  unlockCondition?: string;
   items: MarketItem[];
 }
+
+export interface MarketplaceMarket extends Market {
+    icon: LucideIcon;
+}
+
 
 export interface DigitalAsset {
   id: string;
@@ -170,10 +175,56 @@ export const markets: Market[] = [
     name: "The Dragon's Hoard",
     description: 'A collection of rare artifacts, available only to the most accomplished heroes.',
     status: 'locked',
-    unlocksAt: 10,
+    unlockCondition: 'Complete 10 Ventures to unlock.',
     items: [],
   },
 ];
+
+export const marketplaceMarkets: MarketplaceMarket[] = [
+  {
+    id: 'scribe',
+    name: "The Royal Scribe's Pass",
+    description: "Exchange currency for screen time.",
+    status: 'locked',
+    unlockCondition: "Complete all Daily Duties to unlock.",
+    icon: ScrollText,
+    items: [],
+  },
+  {
+    id: 'treasury',
+    name: "The Royal Treasury",
+    description: "Deposit and manage your earnings.",
+    status: 'open',
+    icon: Banknote,
+    items: [],
+  },
+  {
+    id: 'apothecary',
+    name: "The Apothecary's Confections",
+    description: "Purchase sweet treats and elixirs.",
+    status: 'open',
+    icon: FlaskConical,
+    items: [],
+  },
+  {
+    id: 'artificer',
+    name: "The Artificer's Emporium",
+    description: "Acquire rare and beautiful digital assets.",
+    status: 'open',
+    icon: Brush,
+    items: [],
+  },
+  {
+    id: 'wayfarer',
+    name: "The Wayfarer's Guild",
+    description: "Plan and purchase real-world excursions.",
+    status: 'locked',
+    unlockCondition: "Save up 500 Gems to unlock.",
+    icon: Map,
+    items: [],
+  }
+];
+
 
 /**
  * @deprecated The `prizes` export is deprecated and will be removed in a future version. 

@@ -17,7 +17,7 @@ import { AppLogo } from "@/components/app-logo";
 import { Button } from "@/components/ui/button";
 import { UserNav } from "@/components/user-nav";
 import { useIsAdmin } from "@/hooks/use-is-admin";
-import { ClipboardList, Repeat, Compass, Coins, Store, Shield, LogOut, Image } from "lucide-react";
+import { ClipboardList, Repeat, Compass, Coins, Store, Shield, LogOut, Image, Users, ShoppingCart } from "lucide-react";
 import * as Accordion from "@radix-ui/react-accordion";
 import { cn } from "@/lib/utils";
 
@@ -42,6 +42,22 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   <Link href="/dashboard">
                     <ClipboardList />
                     <span>Quests</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={pathname === '/guild-quests'}>
+                  <Link href="/guild-quests">
+                    <Users />
+                    <span>Guild Quests</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={pathname === '/marketplace'}>
+                  <Link href="/marketplace">
+                    <ShoppingCart />
+                    <span>Marketplace</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

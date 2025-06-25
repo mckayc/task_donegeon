@@ -72,7 +72,7 @@ export default function MarketsPage() {
                     {market.items.length}
                   </TableCell>
                    <TableCell className="hidden md:table-cell">
-                    {market.unlocksAt ? `Completes ${market.unlocksAt} tasks` : 'Always available'}
+                    {market.unlockCondition || 'Always available'}
                   </TableCell>
                   <TableCell>
                     <DropdownMenu>

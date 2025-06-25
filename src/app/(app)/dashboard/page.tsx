@@ -10,13 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { currencies, tasks, earnedAssets, type Task } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
-import { Trophy, Users } from "lucide-react";
+import { Trophy } from "lucide-react";
 
 function QuestItem({ task }: { task: Task }) {
   return (
@@ -39,9 +33,6 @@ export default function QuestsPage() {
   const activeDuties = tasks.filter(task => task.status === 'active' && task.type === 'duty');
   const activeVentures = tasks.filter(task => task.status === 'active' && task.type === 'venture');
   
-  // For now, we'll assume the user is not in a guild.
-  const isInGuild = false;
-
   return (
     <div className="container mx-auto p-0">
       <h1 className="text-4xl font-headline font-bold mb-2">Your Quests</h1>
@@ -101,58 +92,29 @@ export default function QuestsPage() {
 
         {/* Right Column */}
         <div className="lg:col-span-2 space-y-8">
-          <Tabs defaultValue="duties">
-            <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="duties">Duties ({activeDuties.length})</TabsTrigger>
-                <TabsTrigger value="ventures">Ventures ({activeVentures.length})</TabsTrigger>
-            </TabsList>
-            <TabsContent value="duties" className="space-y-4">
-              <Card className="shadow-lg">
-                <CardHeader>
-                    <CardTitle className="font-headline">Daily & Recurring Duties</CardTitle>
-                    <CardDescription>The backbone of a true adventurer's discipline.</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    {activeDuties.length > 0 ? activeDuties.map(task => (
-                        <QuestItem key={task.id} task={task} />
-                    )) : <p className="text-muted-foreground">No active duties at the moment. Check back later!</p>}
-                </CardContent>
-              </Card>
-            </TabsContent>
-            <TabsContent value="ventures" className="space-y-4">
-               <Card className="shadow-lg">
-                <CardHeader>
-                    <CardTitle className="font-headline">Unique Ventures</CardTitle>
-                    <CardDescription>One-time quests for special rewards.</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    {activeVentures.length > 0 ? activeVentures.map(task => (
-                        <QuestItem key={task.id} task={task} />
-                    )) : <p className="text-muted-foreground">No active ventures available. A new adventure will begin soon!</p>}
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
+            <Card className="shadow-lg">
+              <CardHeader>
+                  <CardTitle className="font-headline">Daily & Recurring Duties ({activeDuties.length})</CardTitle>
+                  <CardDescription>The backbone of a true adventurer's discipline.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                  {activeDuties.length > 0 ? activeDuties.map(task => (
+                      <QuestItem key={task.id} task={task} />
+                  )) : <p className="text-muted-foreground">No active duties at the moment. Check back later!</p>}
+              </CardContent>
+            </Card>
 
-           <Card className="shadow-lg">
-            <CardHeader>
-              <CardTitle className="font-headline flex items-center gap-2">
-                <Users /> Guild Quests
-              </CardTitle>
-              <CardDescription>Team up with others to tackle greater challenges.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {isInGuild ? (
-                <p>Guild quests will appear here.</p>
-              ) : (
-                <div className="text-center text-muted-foreground p-8 border-2 border-dashed rounded-lg">
-                  <p>You are not yet part of a guild.</p>
-                  <p className="text-sm">Join a guild to participate in special quests!</p>
-                  <Button className="mt-4">Join a Guild</Button>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+             <Card className="shadow-lg">
+              <CardHeader>
+                  <CardTitle className="font-headline">Unique Ventures ({activeVentures.length})</CardTitle>
+                  <CardDescription>One-time quests for special rewards.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                  {activeVentures.length > 0 ? activeVentures.map(task => (
+                      <QuestItem key={task.id} task={task} />
+                  )) : <p className="text-muted-foreground">No active ventures available. A new adventure will begin soon!</p>}
+              </CardContent>
+            </Card>
         </div>
       </div>
     </div>
