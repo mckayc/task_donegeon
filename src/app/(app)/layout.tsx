@@ -17,7 +17,7 @@ import {
 import { AppLogo } from "@/components/app-logo";
 import { UserNav } from "@/components/user-nav";
 import { useCurrentUser } from '@/hooks/use-current-user';
-import { ClipboardList, Repeat, Compass, Coins, Store, Shield, LogOut, Image, Users, ShoppingCart, Archive, LayoutList, Award, Activity, LayoutDashboard, Settings, CheckCheck } from "lucide-react";
+import { ClipboardList, Repeat, Compass, Coins, Store, Shield, LogOut, Image, Users, ShoppingCart, Archive, LayoutList, Award, Activity, LayoutDashboard, Settings, CheckCheck, HelpCircle } from "lucide-react";
 import * as Accordion from "@radix-ui/react-accordion";
 import { cn } from "@/lib/utils";
 
@@ -198,6 +198,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           </SidebarContent>
           <SidebarFooter>
             <SidebarMenu>
+               <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={pathname === '/help'}>
+                  <Link href="/help">
+                    <HelpCircle />
+                    <span>Help</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton>
                   <LogOut />
