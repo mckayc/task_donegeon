@@ -57,6 +57,28 @@ export default function SettingsPage() {
 
         <Card>
           <CardHeader>
+            <CardTitle>Moderation</CardTitle>
+            <CardDescription>
+              Configure rules for applying penalties and rewards.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="divide-y divide-border">
+            <div className="flex items-center justify-between py-4">
+              <div>
+                <Label htmlFor="setbacks-in-debt" className="font-normal">
+                  Allow Setbacks to Cause Debt
+                </Label>
+                <p className="text-sm text-muted-foreground">
+                  If enabled, a user's currency can go into negative values.
+                </p>
+              </div>
+              <Switch id="setbacks-in-debt" />
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader>
             <CardTitle>Notifications</CardTitle>
             <CardDescription>
               Configure which email notifications are sent to users and admins.

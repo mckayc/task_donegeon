@@ -15,25 +15,26 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { currencyDefinitions, transactionHistory, users } from "@/lib/data";
+import { currencyDefinitions, transactionHistory, users, digitalAssets } from "@/lib/data";
 import { format } from "date-fns";
-import { Wallet } from "lucide-react";
+import { Wallet, Gift } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function PurseHistoryPage() {
   // For demo purposes, let's assume the current user is Adventurer Alex
   const currentUser = users.find(u => u.id === '3');
+  const userTransactions = transactionHistory.filter(t => t.userId === currentUser?.id);
 
   const totalEarnings = {
-    Gold: transactionHistory
-      .filter((t) => t.change.currencyName === "Gold" && t.type === "earn")
-      .reduce((acc, t) => acc + t.change.amount, 0),
-    Gems: transactionHistory
-      .filter((t) => t.change.currencyName === "Gems" && t.type === "earn")
-      .reduce((acc, t) => acc + t.change.amount, 0),
-    Stardust: transactionHistory
-      .filter((t) => t.change.currencyName === "Stardust" && t.type === "earn")
-      .reduce((acc, t) => acc + t.change.amount, 0),
+    Gold: userTransactions
+      .filter((t) => t.change?.currencyName === "Gold" && ['verified', 'auto-verified'].includes(t.status))
+      .reduce((acc, t) => acc + (t.change?.amount || 0), 0),
+    Gems: userTransactions
+      .filter((t) => t.change?.currencyName === "Gems" && ['verified', 'auto-verified'].includes(t.status))
+      .reduce((acc, t) => acc + (t.change?.amount || 0), 0),
+    Stardust: userTransactions
+      .filter((t) => t.change?.currencyName === "Stardust" && ['verified', 'auto-verified'].includes(t.status))
+      .reduce((acc, t) => acc + (t.change?.amount || 0), 0),
   };
 
   if (!currentUser) {
@@ -105,31 +106,48 @@ export default function PurseHistoryPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {transactionHistory
+              {userTransactions
                 .sort((a, b) => b.date.getTime() - a.date.getTime())
-                .map((transaction) => (
-                  <TableRow key={transaction.id}>
-                    <TableCell className="text-muted-foreground">
-                      {format(transaction.date, "MMM d, yyyy")}
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {transaction.description}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Badge
-                        variant="outline"
-                        className={cn(
-                          transaction.type === "earn"
-                            ? "text-green-600 border-green-600/50"
-                            : "text-red-600 border-red-600/50"
-                        )}
-                      >
-                        {transaction.type === 'earn' ? '+' : '-'}{transaction.change.amount.toLocaleString()}{" "}
-                        {transaction.change.currencyName}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                .map((transaction) => {
+                  const isEarn = ['verified', 'auto-verified'].includes(transaction.status);
+                  const isSpend = ['spend', 'setback'].includes(transaction.status);
+                  const isPending = transaction.status === 'pending';
+                  const isAward = transaction.status === 'awarded';
+                  const asset = isAward && transaction.assetId ? digitalAssets.find(da => da.id === transaction.assetId) : null;
+
+                  return (
+                    <TableRow key={transaction.id}>
+                      <TableCell className="text-muted-foreground">
+                        {format(transaction.date, "MMM d, yyyy")}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {transaction.description}
+                      </TableCell>
+                      <TableCell className="text-right">
+                         {transaction.change ? (
+                          <Badge
+                            variant="outline"
+                            className={cn(
+                              isEarn && "text-green-600 border-green-600/50",
+                              isSpend && "text-red-600 border-red-600/50",
+                              isPending && "text-yellow-600 border-yellow-600/50"
+                            )}
+                          >
+                            {isEarn ? '+' : isSpend ? '-' : ''}{transaction.change.amount.toLocaleString()}{" "}
+                            {transaction.change.currencyName}
+                          </Badge>
+                         ) : isAward && asset ? (
+                          <Badge variant="outline" className="text-purple-600 border-purple-600/50">
+                            <Gift className="mr-1 h-3 w-3" />
+                             Award: {asset.name}
+                          </Badge>
+                         ) : (
+                           <Badge variant="secondary">{transaction.status}</Badge>
+                         )}
+                      </TableCell>
+                    </TableRow>
+                  )
+              })}
             </TableBody>
           </Table>
         </CardContent>

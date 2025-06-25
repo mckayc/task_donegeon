@@ -19,9 +19,9 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { users, transactionHistory, type TransactionHistoryEntry } from "@/lib/data";
+import { users, transactionHistory, type TransactionHistoryEntry, digitalAssets } from "@/lib/data";
 import { cn } from "@/lib/utils";
-import { Check, RefreshCcw } from "lucide-react";
+import { Check, RefreshCcw, Gift } from "lucide-react";
 
 function getStatusBadgeVariant(status: TransactionHistoryEntry['status']) {
   switch (status) {
@@ -35,6 +35,8 @@ function getStatusBadgeVariant(status: TransactionHistoryEntry['status']) {
       return 'destructive';
     case 'retry':
       return 'outline';
+    case 'awarded':
+      return 'default'; // Or a new variant
     default:
       return 'secondary';
   }
@@ -84,50 +86,60 @@ export default function UserDashboardPage() {
                       <TableHead>Date</TableHead>
                       <TableHead>Description</TableHead>
                       <TableHead>Status</TableHead>
-                      <TableHead>Amount</TableHead>
+                      <TableHead>Amount/Award</TableHead>
                       <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {userTransactions.map((transaction) => (
-                      <TableRow key={transaction.id}>
-                        <TableCell className="text-muted-foreground text-xs">
-                          {format(transaction.date, "MMM d, h:mm a")}
-                        </TableCell>
-                        <TableCell className="font-medium">
-                          {transaction.description}
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant={getStatusBadgeVariant(transaction.status)} className="capitalize">
-                            {transaction.status}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <span className={cn(
-                            (transaction.status === 'verified' || transaction.status === 'auto-verified') && "text-green-600",
-                            (transaction.status === 'spend' || transaction.status === 'setback') && "text-red-600",
-                            transaction.status === 'pending' && "text-yellow-600"
-                          )}>
-                            {['verified', 'auto-verified'].includes(transaction.status) ? '+' : ['spend', 'setback'].includes(transaction.status) ? '-' : ''}
-                            {transaction.change.amount} {transaction.change.currencyName}
-                          </span>
-                        </TableCell>
-                        <TableCell className="text-right">
-                          {transaction.status === 'pending' && (
-                            <div className="flex gap-2 justify-end">
-                              <Button size="sm" variant="outline" disabled>
-                                <Check className="mr-2 h-4 w-4" />
-                                Verify
-                              </Button>
-                              <Button size="sm" variant="ghost" disabled>
-                                <RefreshCcw className="mr-2 h-4 w-4" />
-                                Retry
-                              </Button>
-                            </div>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    {userTransactions.map((transaction) => {
+                      const asset = transaction.assetId ? digitalAssets.find(da => da.id === transaction.assetId) : null;
+                      return (
+                        <TableRow key={transaction.id}>
+                          <TableCell className="text-muted-foreground text-xs">
+                            {format(transaction.date, "MMM d, h:mm a")}
+                          </TableCell>
+                          <TableCell className="font-medium max-w-[150px] truncate">
+                            {transaction.description}
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant={getStatusBadgeVariant(transaction.status)} className="capitalize">
+                              {transaction.status}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            {transaction.change ? (
+                              <span className={cn(
+                                (['verified', 'auto-verified'].includes(transaction.status)) && "text-green-600",
+                                (['spend', 'setback'].includes(transaction.status)) && "text-red-600",
+                                transaction.status === 'pending' && "text-yellow-600"
+                              )}>
+                                {['verified', 'auto-verified'].includes(transaction.status) ? '+' : ['spend', 'setback'].includes(transaction.status) ? '-' : ''}
+                                {transaction.change.amount} {transaction.change.currencyName}
+                              </span>
+                            ) : asset ? (
+                               <span className="flex items-center gap-1 text-purple-600">
+                                <Gift className="h-3 w-3"/>
+                                <span className="truncate" title={asset.name}>{asset.name}</span>
+                              </span>
+                            ) : null}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            {transaction.status === 'pending' && (
+                              <div className="flex gap-2 justify-end">
+                                <Button size="sm" variant="outline" disabled>
+                                  <Check className="mr-2 h-4 w-4" />
+                                  Verify
+                                </Button>
+                                <Button size="sm" variant="ghost" disabled>
+                                  <RefreshCcw className="mr-2 h-4 w-4" />
+                                  Retry
+                                </Button>
+                              </div>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      )
+                    })}
                   </TableBody>
                 </Table>
               </CardContent>

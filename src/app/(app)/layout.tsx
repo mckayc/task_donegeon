@@ -17,7 +17,7 @@ import {
 import { AppLogo } from "@/components/app-logo";
 import { UserNav } from "@/components/user-nav";
 import { useCurrentUser } from '@/hooks/use-current-user';
-import { ClipboardList, Repeat, Compass, Coins, Store, Shield, LogOut, Image, Users, ShoppingCart, Archive, LayoutList, Award, Activity, LayoutDashboard, Settings, CheckCheck, HelpCircle } from "lucide-react";
+import { ClipboardList, Repeat, Compass, Coins, Store, Shield, LogOut, Image, Users, ShoppingCart, Archive, LayoutList, Award, Activity, LayoutDashboard, Settings, CheckCheck, HelpCircle, Gift, ShieldOff } from "lucide-react";
 import * as Accordion from "@radix-ui/react-accordion";
 import { cn } from "@/lib/utils";
 
@@ -90,18 +90,41 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
-              {/* Admin & Moderator Section */}
+              {/* Moderation Section */}
               {(isBailiff || isDM) && (
                 <>
                   <SidebarSeparator className="my-2" />
-                  <SidebarMenuItem>
-                     <SidebarMenuButton asChild isActive={pathname === '/user-dashboard'}>
-                        <Link href="/user-dashboard">
-                          <LayoutDashboard />
-                          <span>User Dashboard</span>
-                        </Link>
-                      </SidebarMenuButton>
-                  </SidebarMenuItem>
+                   <Accordion.Root type="single" collapsible defaultValue="user-management" className="w-full">
+                    <Accordion.Item value="user-management" className="border-none">
+                      <Accordion.Trigger className={cn("flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0 group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 text-sidebar-foreground", { "bg-sidebar-accent text-sidebar-accent-foreground": pathname.startsWith('/user-dashboard') || pathname.startsWith('/admin/setbacks') || pathname.startsWith('/admin/surprises') })}>
+                        <Activity />
+                        <span className="flex-1 text-left">User Management</span>
+                         <svg className="h-4 w-4 shrink-0 transition-transform duration-200" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 9l6 6l6-6"></path></svg>
+                      </Accordion.Trigger>
+                      <Accordion.Content className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+                        <div className="pl-8 flex flex-col gap-1 py-1">
+                           <SidebarMenuButton asChild isActive={pathname === '/user-dashboard'}>
+                              <Link href="/user-dashboard">
+                                <LayoutDashboard />
+                                <span>Dashboard</span>
+                              </Link>
+                            </SidebarMenuButton>
+                             <SidebarMenuButton asChild isActive={pathname === '/admin/setbacks'}>
+                              <Link href="/admin/setbacks">
+                                <ShieldOff />
+                                <span>Setbacks</span>
+                              </Link>
+                            </SidebarMenuButton>
+                             <SidebarMenuButton asChild isActive={pathname === '/admin/surprises'}>
+                              <Link href="/admin/surprises">
+                                <Gift />
+                                <span>Surprises</span>
+                              </Link>
+                            </SidebarMenuButton>
+                        </div>
+                      </Accordion.Content>
+                    </Accordion.Item>
+                   </Accordion.Root>
                 </>
               )}
 

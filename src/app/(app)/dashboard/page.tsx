@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { currencyDefinitions, tasks, earnedAssets, users, ranks, digitalAssets, transactionHistory, type Task } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
-import { Trophy, Award, History, Repeat, Compass } from "lucide-react";
+import { Trophy, Award, History, Repeat, Compass, Gift } from "lucide-react";
 import { ArrowRight } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -148,6 +148,9 @@ export default function DashboardPage() {
                       const isEarn = ['verified', 'auto-verified'].includes(transaction.status);
                       const isSpend = ['spend', 'setback'].includes(transaction.status);
                       const isPending = transaction.status === 'pending';
+                      const isAward = transaction.status === 'awarded';
+                      const asset = isAward && transaction.assetId ? digitalAssets.find(da => da.id === transaction.assetId) : null;
+
                       return (
                         <li key={transaction.id} className="flex items-center justify-between text-sm">
                           <div className="flex flex-col">
@@ -157,19 +160,27 @@ export default function DashboardPage() {
                           <div className="flex items-center gap-2">
                             <Badge variant="outline" className={cn({
                                 "text-yellow-600 border-yellow-600/50": isPending,
+                                "text-purple-600 border-purple-600/50": isAward,
                             })}>
                               {transaction.status}
                             </Badge>
-                            <Badge
-                              variant="outline"
-                              className={cn(
-                                isEarn && "text-green-600 border-green-600/50",
-                                isSpend && "text-red-600 border-red-600/50",
-                                isPending && "text-yellow-600 border-yellow-600/50"
-                              )}
-                            >
-                              {isEarn ? '+' : isSpend ? '-' : ''}{transaction.change.amount.toLocaleString()} {transaction.change.currencyName}
-                            </Badge>
+                             {transaction.change ? (
+                                <Badge
+                                  variant="outline"
+                                  className={cn(
+                                    isEarn && "text-green-600 border-green-600/50",
+                                    isSpend && "text-red-600 border-red-600/50",
+                                    isPending && "text-yellow-600 border-yellow-600/50"
+                                  )}
+                                >
+                                  {isEarn ? '+' : isSpend ? '-' : ''}{transaction.change.amount.toLocaleString()} {transaction.change.currencyName}
+                                </Badge>
+                              ) : isAward && asset ? (
+                                <Badge variant="outline" className="text-purple-600 border-purple-600/50">
+                                  <Gift className="mr-1 h-3 w-3" />
+                                  {asset.name}
+                                </Badge>
+                              ) : null}
                           </div>
                         </li>
                       )
