@@ -15,7 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { currencies } from "@/lib/data";
+import { currencyDefinitions } from "@/lib/data";
 import { MoreHorizontal, PlusCircle } from "lucide-react";
 import {
   DropdownMenu,
@@ -24,7 +24,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
 
 export default function CurrenciesPage() {
   return (
@@ -53,20 +52,18 @@ export default function CurrenciesPage() {
               <TableRow>
                 <TableHead className="w-16">Icon</TableHead>
                 <TableHead>Name</TableHead>
-                <TableHead className="hidden md:table-cell">Initial Amount</TableHead>
                 <TableHead>
                   <span className="sr-only">Actions</span>
                 </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {currencies.map((currency) => (
+              {currencyDefinitions.map((currency) => (
                 <TableRow key={currency.name}>
                   <TableCell>
                     <currency.icon className="w-6 h-6 text-accent" />
                   </TableCell>
                   <TableCell className="font-medium">{currency.name}</TableCell>
-                  <TableCell className="hidden md:table-cell">{currency.amount.toLocaleString()}</TableCell>
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>

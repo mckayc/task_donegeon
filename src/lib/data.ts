@@ -2,9 +2,8 @@
 import type { LucideIcon } from "lucide-react";
 import { Coins, Gem, Star, ScrollText, Banknote, FlaskConical, Brush, Map } from 'lucide-react';
 
-export interface Currency {
+export interface CurrencyDefinition {
   name: string;
-  amount: number;
   icon: LucideIcon;
   isDeletable: boolean;
 }
@@ -72,6 +71,11 @@ export interface User {
   role: 'Donegeon Master' | 'Bailiff' | 'Adventurer';
   avatar: string;
   rankId: string;
+  purse: {
+    gold: number;
+    gems: number;
+    stardust: number;
+  };
 }
 
 export interface Rank {
@@ -90,16 +94,16 @@ export interface TransactionHistoryEntry {
   description: string;
   type: 'earn' | 'spend';
   change: {
-    currencyName: string;
+    currencyName: 'Gold' | 'Gems' | 'Stardust';
     amount: number;
   };
 }
 
 export const users: User[] = [
-    { id: '1', name: 'DM Dave', email: 'dave@example.com', role: 'Donegeon Master', avatar: 'https://i.pravatar.cc/150?u=dm-dave', rankId: 'rank-30' },
-    { id: '2', name: 'Moderator Mary', email: 'mary@example.com', role: 'Bailiff', avatar: 'https://i.pravatar.cc/150?u=mod-mary', rankId: 'rank-15' },
-    { id: '3', name: 'Adventurer Alex', email: 'alex@example.com', role: 'Adventurer', avatar: 'https://i.pravatar.cc/150?u=adv-alex', rankId: 'rank-5' },
-    { id: '4', name: 'Adventurer Beth', email: 'beth@example.com', role: 'Adventurer', avatar: 'https://i.pravatar.cc/150?u=adv-beth', rankId: 'rank-2' },
+    { id: '1', name: 'DM Dave', email: 'dave@example.com', role: 'Donegeon Master', avatar: 'https://i.pravatar.cc/150?u=dm-dave', rankId: 'rank-30', purse: { gold: 100000, gems: 50000, stardust: 200000 } },
+    { id: '2', name: 'Moderator Mary', email: 'mary@example.com', role: 'Bailiff', avatar: 'https://i.pravatar.cc/150?u=mod-mary', rankId: 'rank-15', purse: { gold: 15000, gems: 2500, stardust: 50000 } },
+    { id: '3', name: 'Adventurer Alex', email: 'alex@example.com', role: 'Adventurer', avatar: 'https://i.pravatar.cc/150?u=adv-alex', rankId: 'rank-5', purse: { gold: 1095, gems: 310, stardust: 5500 } },
+    { id: '4', name: 'Adventurer Beth', email: 'beth@example.com', role: 'Adventurer', avatar: 'https://i.pravatar.cc/150?u=adv-beth', rankId: 'rank-2', purse: { gold: 450, gems: 50, stardust: 1200 } },
 ];
 
 const rankNames = [
@@ -147,10 +151,10 @@ export const earnedAssets: DigitalAsset[] = [
   digitalAssets[6],
 ];
 
-export const currencies: Currency[] = [
-  { name: 'Gold', amount: 1115, icon: Coins, isDeletable: false },
-  { name: 'Gems', amount: 310, icon: Gem, isDeletable: false },
-  { name: 'Stardust', amount: 5500, icon: Star, isDeletable: false },
+export const currencyDefinitions: CurrencyDefinition[] = [
+  { name: 'Gold', icon: Coins, isDeletable: false },
+  { name: 'Gems', icon: Gem, isDeletable: false },
+  { name: 'Stardust', icon: Star, isDeletable: false },
 ];
 
 export const tasks: Task[] = [
@@ -351,4 +355,5 @@ export const transactionHistory: TransactionHistoryEntry[] = [
   { id: 'th6', date: new Date('2024-07-19T10:00:00Z'), description: 'Initial Balance', type: 'earn', change: { currencyName: 'Gold', amount: 1250 } },
   { id: 'th7', date: new Date('2024-07-19T10:00:00Z'), description: 'Initial Balance', type: 'earn', change: { currencyName: 'Gems', amount: 300 } },
   { id: 'th8', date: new Date('2024-07-19T10:00:00Z'), description: 'Initial Balance', type: 'earn', change: { currencyName: 'Stardust', amount: 5000 } },
+  { id: 'th9', date: new Date('2024-07-25T09:00:00Z'), description: 'Penalty: Left adventuring gear in the hall.', type: 'spend', change: { currencyName: 'Gold', amount: 20 } },
 ];

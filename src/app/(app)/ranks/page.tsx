@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ranks, digitalAssets, users, currencies } from "@/lib/data";
+import { ranks, digitalAssets, users } from "@/lib/data";
 import { CheckCircle2, Lock, Coins, Gem, Star, Award } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
@@ -15,12 +15,16 @@ import { Progress } from "@/components/ui/progress";
 export default function RanksPage() {
   // Assuming current user is Adventurer Alex for demo
   const currentUser = users.find(u => u.id === '3');
+  
+  if (!currentUser) {
+    return <div>Loading...</div>;
+  }
+  
   const currentRank = ranks.find(r => r.id === currentUser?.rankId);
-  const gold = currencies.find(c => c.name === 'Gold')?.amount || 0;
-  const gems = currencies.find(c => c.name === 'Gems')?.amount || 0;
-  const stardust = currencies.find(c => c.name === 'Stardust')?.amount || 0;
+  const { gold, gems, stardust } = currentUser.purse;
 
-  if (!currentUser || !currentRank) {
+
+  if (!currentRank) {
     return <div>Loading...</div>;
   }
 
@@ -121,4 +125,3 @@ export default function RanksPage() {
     </div>
   );
 }
-

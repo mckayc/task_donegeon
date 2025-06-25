@@ -10,10 +10,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { currencies, tasks, earnedAssets, users, ranks, digitalAssets, type Task } from "@/lib/data";
+import { currencyDefinitions, tasks, earnedAssets, users, ranks, digitalAssets, transactionHistory, type Task } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
 import { Trophy, Award, History } from "lucide-react";
 import { ArrowRight } from "lucide-react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 function QuestItem({ task }: { task: Task }) {
   return (
@@ -41,10 +43,47 @@ export default function QuestsPage() {
   const currentRank = ranks.find(r => r.id === currentUser?.rankId);
   const rankAsset = digitalAssets.find(da => da.id === currentRank?.assetId);
 
+  if (!currentUser) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="container mx-auto p-0">
       <h1 className="text-4xl font-headline font-bold mb-2">Your Quests</h1>
       <p className="text-muted-foreground mb-8">Adventure awaits! Complete quests to earn rewards.</p>
+      
+      <Card className="mb-8 shadow-lg">
+        <CardHeader>
+          <CardTitle className="font-headline flex items-center gap-2"><History /> Recent Activity</CardTitle>
+          <CardDescription>Your last 5 recorded activities in the Donegeon.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ul className="space-y-3">
+            {transactionHistory
+              .sort((a, b) => b.date.getTime() - a.date.getTime())
+              .slice(0, 5)
+              .map((transaction) => (
+                <li key={transaction.id} className="flex items-center justify-between text-sm">
+                  <div className="flex flex-col">
+                    <p className="font-medium">{transaction.description}</p>
+                    <p className="text-xs text-muted-foreground">{format(transaction.date, "MMM d, yyyy 'at' h:mm a")}</p>
+                  </div>
+                  <Badge
+                    variant="outline"
+                    className={cn(
+                      transaction.type === "earn"
+                        ? "text-green-600 border-green-600/50"
+                        : "text-red-600 border-red-600/50"
+                    )}
+                  >
+                    {transaction.type === 'earn' ? '+' : '-'}{transaction.change.amount.toLocaleString()} {transaction.change.currencyName}
+                  </Badge>
+                </li>
+              ))}
+          </ul>
+        </CardContent>
+      </Card>
+
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         
@@ -94,13 +133,13 @@ export default function QuestsPage() {
             </CardHeader>
             <CardContent>
               <ul className="space-y-4">
-                {currencies.map(currency => (
+                {currencyDefinitions.map(currency => (
                   <li key={currency.name} className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <currency.icon className="w-6 h-6 text-accent" />
                       <span className="font-semibold">{currency.name}</span>
                     </div>
-                    <span className="font-mono text-lg">{currency.amount.toLocaleString()}</span>
+                    <span className="font-mono text-lg">{currentUser.purse[currency.name.toLowerCase() as keyof typeof currentUser.purse].toLocaleString()}</span>
                   </li>
                 ))}
               </ul>
