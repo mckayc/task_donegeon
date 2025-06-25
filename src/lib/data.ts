@@ -59,6 +59,11 @@ export const digitalAssets: DigitalAsset[] = [
   { id: 'da8', name: 'Magic Key', category: 'Item', image: 'https://placehold.co/200x200.png', aiHint: 'glowing key' },
 ];
 
+export const earnedAssets: DigitalAsset[] = [
+  digitalAssets[0],
+  digitalAssets[3],
+  digitalAssets[6],
+];
 
 export const currencies: Currency[] = [
   { name: 'Gold', amount: 1250, icon: Coins },
@@ -99,6 +104,22 @@ export const tasks: Task[] = [
     status: 'completed',
     type: 'venture',
   },
+  {
+    id: 'venture-2',
+    title: 'Library Book Expedition',
+    description: 'Embark on a special quest to the local library to find and check out a new book.',
+    reward: { currencyName: 'Stardust', amount: 500 },
+    status: 'active',
+    type: 'venture',
+  },
+  {
+    id: 'duty-4',
+    title: 'Feed the Familiars',
+    description: 'Ensure the household pets are fed and have fresh water.',
+    reward: { currencyName: 'Gold', amount: 25 },
+    status: 'active',
+    type: 'duty'
+  }
 ];
 
 const allItems: MarketItem[] = [
