@@ -149,6 +149,7 @@ export const digitalAssets: DigitalAsset[] = [
   { id: 'da6', name: 'Master of Chores', category: 'Badge', image: 'https://placehold.co/200x200.png', aiHint: 'gold medal' },
   { id: 'da7', name: 'Health Potion', category: 'Item', image: 'https://placehold.co/200x200.png', aiHint: 'health potion' },
   { id: 'da8', name: 'Magic Key', category: 'Item', image: 'https://placehold.co/200x200.png', aiHint: 'glowing key' },
+  { id: 'da9', name: 'Golden Gauntlet', category: 'Item', image: 'https://placehold.co/200x200.png', aiHint: 'golden gauntlet' },
   // Rank assets
   { id: 'da-rank-1', name: 'Fledgling Crest', category: 'Rank', image: 'https://placehold.co/200x200.png', aiHint: 'bronze shield' },
   { id: 'da-rank-2', name: 'Adept Crest', category: 'Rank', image: 'https://placehold.co/200x200.png', aiHint: 'iron shield' },
@@ -161,6 +162,7 @@ export const earnedAssets: DigitalAsset[] = [
   digitalAssets[0],
   digitalAssets[3],
   digitalAssets[6],
+  digitalAssets[8],
 ];
 
 export const currencyDefinitions: CurrencyDefinition[] = [
