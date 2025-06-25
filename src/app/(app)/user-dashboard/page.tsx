@@ -73,7 +73,7 @@ export default function UserDashboardPage() {
                     </div>
                 </div>
                 <Button asChild variant="outline">
-                  <Link href="#">View Full History</Link>
+                  <Link href={`/user-dashboard/${user.id}`}>View Full History</Link>
                 </Button>
               </CardHeader>
               <CardContent>
