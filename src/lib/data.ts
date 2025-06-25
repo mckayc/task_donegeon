@@ -40,6 +40,26 @@ export interface Market {
   items: MarketItem[];
 }
 
+export interface DigitalAsset {
+  id: string;
+  name: string;
+  category: 'Avatar' | 'Badge' | 'Item';
+  image: string;
+  aiHint: string;
+}
+
+export const digitalAssets: DigitalAsset[] = [
+  { id: 'da1', name: 'Knight Helmet', category: 'Avatar', image: 'https://placehold.co/200x200.png', aiHint: 'knight helmet' },
+  { id: 'da2', name: 'Wizard Hat', category: 'Avatar', image: 'https://placehold.co/200x200.png', aiHint: 'wizard hat' },
+  { id: 'da3', name: 'Ranger Hood', category: 'Avatar', image: 'https://placehold.co/200x200.png', aiHint: 'ranger hood' },
+  { id: 'da4', name: 'First Quest Badge', category: 'Badge', image: 'https://placehold.co/200x200.png', aiHint: 'bronze medal' },
+  { id: 'da5', name: 'Week Streak Badge', category: 'Badge', image: 'https://placehold.co/200x200.png', aiHint: 'silver medal' },
+  { id: 'da6', name: 'Master of Chores', category: 'Badge', image: 'https://placehold.co/200x200.png', aiHint: 'gold medal' },
+  { id: 'da7', name: 'Health Potion', category: 'Item', image: 'https://placehold.co/200x200.png', aiHint: 'health potion' },
+  { id: 'da8', name: 'Magic Key', category: 'Item', image: 'https://placehold.co/200x200.png', aiHint: 'glowing key' },
+];
+
+
 export const currencies: Currency[] = [
   { name: 'Gold', amount: 1250, icon: Coins },
   { name: 'Gems', amount: 300, icon: Gem },
