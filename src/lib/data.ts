@@ -84,6 +84,17 @@ export interface Rank {
   assetId: string;
 }
 
+export interface TransactionHistoryEntry {
+  id: string;
+  date: Date;
+  description: string;
+  type: 'earn' | 'spend';
+  change: {
+    currencyName: string;
+    amount: number;
+  };
+}
+
 export const users: User[] = [
     { id: '1', name: 'DM Dave', email: 'dave@example.com', role: 'Donegeon Master', avatar: 'https://i.pravatar.cc/150?u=dm-dave', rankId: 'rank-30' },
     { id: '2', name: 'Moderator Mary', email: 'mary@example.com', role: 'Bailiff', avatar: 'https://i.pravatar.cc/150?u=mod-mary', rankId: 'rank-15' },
@@ -137,9 +148,9 @@ export const earnedAssets: DigitalAsset[] = [
 ];
 
 export const currencies: Currency[] = [
-  { name: 'Gold', amount: 1250, icon: Coins, isDeletable: false },
-  { name: 'Gems', amount: 300, icon: Gem, isDeletable: false },
-  { name: 'Stardust', amount: 5000, icon: Star, isDeletable: false },
+  { name: 'Gold', amount: 1115, icon: Coins, isDeletable: false },
+  { name: 'Gems', amount: 310, icon: Gem, isDeletable: false },
+  { name: 'Stardust', amount: 5500, icon: Star, isDeletable: false },
 ];
 
 export const tasks: Task[] = [
@@ -330,3 +341,14 @@ export const allTasksForSuggester: Task[] = [
         type: 'duty'
     }
 ]
+
+export const transactionHistory: TransactionHistoryEntry[] = [
+  { id: 'th1', date: new Date('2024-07-20T10:00:00Z'), description: 'Completed Quest: Yard Guardian', type: 'earn', change: { currencyName: 'Gems', amount: 10 } },
+  { id: 'th2', date: new Date('2024-07-21T15:30:00Z'), description: 'Completed Quest: The Dishes Dragon', type: 'earn', change: { currencyName: 'Gold', amount: 40 } },
+  { id: 'th3', date: new Date('2024-07-22T09:00:00Z'), description: 'Purchased: Sword of Digital Power', type: 'spend', change: { currencyName: 'Gold', amount: 200 } },
+  { id: 'th4', date: new Date('2024-07-23T18:00:00Z'), description: 'Completed Quest: Feed the Familiars', type: 'earn', change: { currencyName: 'Gold', amount: 25 } },
+  { id: 'th5', date: new Date('2024-07-24T11:00:00Z'), description: 'Completed Quest: Library Book Expedition', type: 'earn', change: { currencyName: 'Stardust', amount: 500 } },
+  { id: 'th6', date: new Date('2024-07-19T10:00:00Z'), description: 'Initial Balance', type: 'earn', change: { currencyName: 'Gold', amount: 1250 } },
+  { id: 'th7', date: new Date('2024-07-19T10:00:00Z'), description: 'Initial Balance', type: 'earn', change: { currencyName: 'Gems', amount: 300 } },
+  { id: 'th8', date: new Date('2024-07-19T10:00:00Z'), description: 'Initial Balance', type: 'earn', change: { currencyName: 'Stardust', amount: 5000 } },
+];

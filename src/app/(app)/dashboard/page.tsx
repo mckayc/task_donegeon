@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { currencies, tasks, earnedAssets, users, ranks, digitalAssets, type Task } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
-import { Trophy, Award } from "lucide-react";
+import { Trophy, Award, History } from "lucide-react";
 import { ArrowRight } from "lucide-react";
 
 function QuestItem({ task }: { task: Task }) {
@@ -105,6 +105,14 @@ export default function QuestsPage() {
                 ))}
               </ul>
             </CardContent>
+             <CardFooter>
+              <Button asChild className="w-full" variant="outline">
+                <Link href="/purse">
+                  <History className="mr-2" />
+                  View History
+                </Link>
+              </Button>
+            </CardFooter>
           </Card>
 
           <Card className="shadow-lg">
