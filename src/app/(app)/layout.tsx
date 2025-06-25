@@ -36,14 +36,39 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           </SidebarHeader>
           <SidebarContent>
             <SidebarMenu>
-              <SidebarMenuItem>
+               <SidebarMenuItem>
                 <SidebarMenuButton asChild isActive={pathname === '/dashboard'}>
                   <Link href="/dashboard">
-                    <ClipboardList />
-                    <span>Quests</span>
+                    <LayoutDashboard />
+                    <span>Dashboard</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
+              <Accordion.Root type="single" collapsible defaultValue="quests" className="w-full">
+                 <Accordion.Item value="quests" className="border-none">
+                    <Accordion.Trigger className={cn("flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0 group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 text-sidebar-foreground", { "bg-sidebar-accent text-sidebar-accent-foreground": pathname.startsWith('/duties') || pathname.startsWith('/ventures') })}>
+                        <ClipboardList />
+                        <span className="flex-1 text-left">Quests</span>
+                         <svg className="h-4 w-4 shrink-0 transition-transform duration-200" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 9l6 6l6-6"></path></svg>
+                      </Accordion.Trigger>
+                      <Accordion.Content className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+                        <div className="pl-8 flex flex-col gap-1 py-1">
+                          <SidebarMenuButton asChild isActive={pathname === '/duties'}>
+                             <Link href="/duties">
+                              <Repeat />
+                              <span>Duties</span>
+                            </Link>
+                          </SidebarMenuButton>
+                           <SidebarMenuButton asChild isActive={pathname === '/ventures'}>
+                             <Link href="/ventures">
+                              <Compass />
+                              <span>Ventures</span>
+                            </Link>
+                          </SidebarMenuButton>
+                        </div>
+                      </Accordion.Content>
+                 </Accordion.Item>
+              </Accordion.Root>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild isActive={pathname === '/guild-quests'}>
                   <Link href="/guild-quests">

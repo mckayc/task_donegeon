@@ -12,31 +12,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { currencyDefinitions, tasks, earnedAssets, users, ranks, digitalAssets, transactionHistory, type Task } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
-import { Trophy, Award, History } from "lucide-react";
+import { Trophy, Award, History, Repeat, Compass } from "lucide-react";
 import { ArrowRight } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
-function QuestItem({ task }: { task: Task }) {
-  return (
-    <Card className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-      <div>
-        <h3 className="font-bold">{task.title}</h3>
-        <p className="text-sm text-muted-foreground">{task.description}</p>
-      </div>
-      <div className="flex-shrink-0 text-right space-y-2">
-        <Badge variant="secondary" className="bg-accent/20 text-accent-foreground">
-          +{task.reward.amount} {task.reward.currencyName}
-        </Badge>
-        <Button size="sm">Complete</Button>
-      </div>
-    </Card>
-  )
-}
-
-export default function QuestsPage() {
-  const activeDuties = tasks.filter(task => task.status === 'active' && task.type === 'duty');
-  const activeVentures = tasks.filter(task => task.status === 'active' && task.type === 'venture');
+export default function DashboardPage() {
+  const activeDutiesCount = tasks.filter(task => task.status === 'active' && task.type === 'duty').length;
+  const activeVenturesCount = tasks.filter(task => task.status === 'active' && task.type === 'venture').length;
   
   // For demo purposes, let's assume the current user is Adventurer Alex
   const currentUser = users.find(u => u.id === '3');
@@ -51,8 +34,8 @@ export default function QuestsPage() {
 
   return (
     <div className="container mx-auto p-0">
-      <h1 className="text-4xl font-headline font-bold mb-2">Your Quests</h1>
-      <p className="text-muted-foreground mb-8">Adventure awaits! Complete quests to earn rewards.</p>
+      <h1 className="text-4xl font-headline font-bold mb-2">Dashboard</h1>
+      <p className="text-muted-foreground mb-8">An overview of your adventurer's journey.</p>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         
@@ -153,26 +136,30 @@ export default function QuestsPage() {
         <div className="lg:col-span-2 space-y-8">
             <Card className="shadow-lg">
               <CardHeader>
-                  <CardTitle className="font-headline">Daily & Recurring Duties ({activeDuties.length})</CardTitle>
-                  <CardDescription>The backbone of a true adventurer's discipline.</CardDescription>
+                  <CardTitle className="font-headline flex items-center gap-2"><Repeat /> Daily & Recurring Duties</CardTitle>
+                  <CardDescription>The backbone of a true adventurer's discipline. You have {activeDutiesCount} active duties.</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                  {activeDuties.length > 0 ? activeDuties.map(task => (
-                      <QuestItem key={task.id} task={task} />
-                  )) : <p className="text-muted-foreground">No active duties at the moment. Check back later!</p>}
-              </CardContent>
+              <CardFooter>
+                 <Button asChild className="w-full">
+                  <Link href="/duties">
+                    View All Duties <ArrowRight className="ml-2" />
+                  </Link>
+                </Button>
+              </CardFooter>
             </Card>
 
              <Card className="shadow-lg">
               <CardHeader>
-                  <CardTitle className="font-headline">Unique Ventures ({activeVentures.length})</CardTitle>
-                  <CardDescription>One-time quests for special rewards.</CardDescription>
+                  <CardTitle className="font-headline flex items-center gap-2"><Compass /> Unique Ventures</CardTitle>
+                  <CardDescription>One-time quests for special rewards. There are {activeVenturesCount} ventures available.</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                  {activeVentures.length > 0 ? activeVentures.map(task => (
-                      <QuestItem key={task.id} task={task} />
-                  )) : <p className="text-muted-foreground">No active ventures available. A new adventure will begin soon!</p>}
-              </CardContent>
+              <CardFooter>
+                 <Button asChild className="w-full">
+                  <Link href="/ventures">
+                    View All Ventures <ArrowRight className="ml-2" />
+                  </Link>
+                </Button>
+              </CardFooter>
             </Card>
         </div>
       </div>

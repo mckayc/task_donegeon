@@ -8,10 +8,13 @@ export interface CurrencyDefinition {
   isDeletable: boolean;
 }
 
+export type TaskCategory = 'household' | 'learning' | 'creative' | 'outdoor' | 'health';
+
 export interface Task {
   id: string;
   title: string;
   description: string;
+  category: TaskCategory;
   reward: {
     currencyName: CurrencyDefinition['name'];
     amount: number;
@@ -171,6 +174,7 @@ export const tasks: Task[] = [
     id: '1',
     title: 'Clean Your Lair',
     description: 'A tidy lair is a happy lair. Sweep, dust, and organize your personal space.',
+    category: 'household',
     reward: { currencyName: 'Gold', amount: 50 },
     status: 'active',
     type: 'duty',
@@ -180,6 +184,7 @@ export const tasks: Task[] = [
     id: '2',
     title: 'Homework Quest',
     description: 'Conquer the beast of knowledge! Complete all your homework assignments for today.',
+    category: 'learning',
     reward: { currencyName: 'Gold', amount: 75 },
     status: 'active',
     type: 'duty',
@@ -189,15 +194,17 @@ export const tasks: Task[] = [
     id: '3',
     title: 'The Dishes Dragon',
     description: 'This fiery beast has left a pile of dirty plates. Wash and dry them to restore peace to the kitchen.',
+    category: 'household',
     reward: { currencyName: 'Gold', amount: 40 },
     status: 'active',
     type: 'duty',
     verification: { type: 'auto' },
   },
-    {
+  {
     id: '4',
     title: 'Yard Guardian',
     description: 'Patrol the yard and defeat the invading weeds. Rake the leaves to clear the pathways.',
+    category: 'outdoor',
     reward: { currencyName: 'Gems', amount: 10 },
     status: 'completed',
     type: 'venture',
@@ -207,6 +214,7 @@ export const tasks: Task[] = [
     id: 'venture-2',
     title: 'Library Book Expedition',
     description: 'Embark on a special quest to the local library to find and check out a new book.',
+    category: 'learning',
     reward: { currencyName: 'Stardust', amount: 500 },
     status: 'active',
     type: 'venture',
@@ -216,11 +224,32 @@ export const tasks: Task[] = [
     id: 'duty-4',
     title: 'Feed the Familiars',
     description: 'Ensure the household pets are fed and have fresh water.',
+    category: 'household',
     reward: { currencyName: 'Gold', amount: 25 },
     status: 'active',
     type: 'duty',
     verification: { type: 'auto' },
-  }
+  },
+  {
+    id: 'venture-3',
+    title: 'Paint a Masterpiece',
+    description: 'Create a piece of art. It can be a drawing, a painting, or a digital creation.',
+    category: 'creative',
+    reward: { currencyName: 'Gems', amount: 20 },
+    status: 'active',
+    type: 'venture',
+    verification: { type: 'manual' },
+  },
+  {
+    id: 'duty-5',
+    title: 'Morning Stretch Routine',
+    description: 'Complete a 10-minute stretching routine to start the day with energy.',
+    category: 'health',
+    reward: { currencyName: 'Stardust', amount: 100 },
+    status: 'active',
+    type: 'duty',
+    verification: { type: 'auto' },
+  },
 ];
 
 export const inventoryItems: InventoryItem[] = [
@@ -347,6 +376,7 @@ export const allTasksForSuggester: Task[] = [
         id: '5',
         title: 'Walk the dog',
         description: 'Take the family pet for a 20-minute walk.',
+        category: 'outdoor',
         reward: { currencyName: 'Gold', amount: 30 },
         status: 'completed',
         type: 'duty',
@@ -356,6 +386,7 @@ export const allTasksForSuggester: Task[] = [
         id: '6',
         title: 'Read a book',
         description: 'Read a chapter of a book for 30 minutes.',
+        category: 'learning',
         reward: { currencyName: 'Stardust', amount: 200 },
         status: 'completed',
         type: 'duty',

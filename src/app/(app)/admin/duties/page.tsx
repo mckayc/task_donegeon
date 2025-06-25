@@ -63,6 +63,7 @@ export default function DutiesPage() {
             <TableHeader>
               <TableRow>
                 <TableHead>Title</TableHead>
+                <TableHead>Category</TableHead>
                 <TableHead>Reward</TableHead>
                 <TableHead>Verification</TableHead>
                 <TableHead className="hidden md:table-cell">Status</TableHead>
@@ -77,6 +78,7 @@ export default function DutiesPage() {
                 return (
                   <TableRow key={task.id}>
                     <TableCell className="font-medium">{task.title}</TableCell>
+                    <TableCell className="capitalize">{task.category}</TableCell>
                     <TableCell>
                       <Badge variant="outline">
                         {task.reward.amount} {task.reward.currencyName}
