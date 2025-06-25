@@ -17,7 +17,7 @@ import { AppLogo } from "@/components/app-logo";
 import { Button } from "@/components/ui/button";
 import { UserNav } from "@/components/user-nav";
 import { useIsAdmin } from "@/hooks/use-is-admin";
-import { LayoutDashboard, Users, ClipboardList, Coins, Store, Shield, LogOut } from "lucide-react";
+import { LayoutDashboard, Repeat, Compass, Coins, Store, Shield, LogOut } from "lucide-react";
 import * as Accordion from "@radix-ui/react-accordion";
 import { cn } from "@/lib/utils";
 
@@ -56,10 +56,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     </Accordion.Trigger>
                     <Accordion.Content className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
                       <div className="pl-8 flex flex-col gap-1 py-1">
-                        <SidebarMenuButton asChild isActive={pathname === '/admin/tasks'}>
-                           <Link href="/admin/tasks">
-                            <ClipboardList />
-                            <span>Tasks</span>
+                        <SidebarMenuButton asChild isActive={pathname === '/admin/duties'}>
+                           <Link href="/admin/duties">
+                            <Repeat />
+                            <span>Duties</span>
+                          </Link>
+                        </SidebarMenuButton>
+                         <SidebarMenuButton asChild isActive={pathname === '/admin/ventures'}>
+                           <Link href="/admin/ventures">
+                            <Compass />
+                            <span>Ventures</span>
                           </Link>
                         </SidebarMenuButton>
                          <SidebarMenuButton asChild isActive={pathname === '/admin/currencies'}>

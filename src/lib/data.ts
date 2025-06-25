@@ -16,6 +16,7 @@ export interface Task {
     amount: number;
   };
   status: 'active' | 'completed';
+  type: 'duty' | 'venture';
 }
 
 export interface MarketItem {
@@ -52,6 +53,7 @@ export const tasks: Task[] = [
     description: 'A tidy lair is a happy lair. Sweep, dust, and organize your personal space.',
     reward: { currencyName: 'Gold', amount: 50 },
     status: 'active',
+    type: 'duty',
   },
   {
     id: '2',
@@ -59,6 +61,7 @@ export const tasks: Task[] = [
     description: 'Conquer the beast of knowledge! Complete all your homework assignments for today.',
     reward: { currencyName: 'Gold', amount: 75 },
     status: 'active',
+    type: 'duty',
   },
   {
     id: '3',
@@ -66,6 +69,7 @@ export const tasks: Task[] = [
     description: 'This fiery beast has left a pile of dirty plates. Wash and dry them to restore peace to the kitchen.',
     reward: { currencyName: 'Gold', amount: 40 },
     status: 'active',
+    type: 'duty',
   },
     {
     id: '4',
@@ -73,6 +77,7 @@ export const tasks: Task[] = [
     description: 'Patrol the yard and defeat the invading weeds. Rake the leaves to clear the pathways.',
     reward: { currencyName: 'Gems', amount: 10 },
     status: 'completed',
+    type: 'venture',
   },
 ];
 
@@ -143,6 +148,7 @@ export const allTasksForSuggester: Task[] = [
         description: 'Take the family pet for a 20-minute walk.',
         reward: { currencyName: 'Gold', amount: 30 },
         status: 'completed',
+        type: 'duty'
     },
     {
         id: '6',
@@ -150,5 +156,6 @@ export const allTasksForSuggester: Task[] = [
         description: 'Read a chapter of a book for 30 minutes.',
         reward: { currencyName: 'Stardust', amount: 200 },
         status: 'completed',
+        type: 'duty'
     }
 ]
