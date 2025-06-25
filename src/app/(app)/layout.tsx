@@ -68,10 +68,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                             <span>Currencies</span>
                           </Link>
                         </SidebarMenuButton>
-                         <SidebarMenuButton asChild isActive={pathname === '/admin/store'}>
-                           <Link href="/admin/store">
+                         <SidebarMenuButton asChild isActive={pathname === '/admin/markets'}>
+                           <Link href="/admin/markets">
                             <Store />
-                            <span>Store</span>
+                            <span>Markets</span>
                           </Link>
                         </SidebarMenuButton>
                       </div>

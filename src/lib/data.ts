@@ -18,7 +18,7 @@ export interface Task {
   status: 'active' | 'completed';
 }
 
-export interface Prize {
+export interface MarketItem {
   id: string;
   name: string;
   description: string;
@@ -28,6 +28,15 @@ export interface Prize {
   };
   image: string;
   aiHint: string;
+}
+
+export interface Market {
+  id: string;
+  name: string;
+  description: string;
+  status: 'open' | 'locked';
+  unlocksAt?: number;
+  items: MarketItem[];
 }
 
 export const currencies: Currency[] = [
@@ -67,7 +76,7 @@ export const tasks: Task[] = [
   },
 ];
 
-export const prizes: Prize[] = [
+const allItems: MarketItem[] = [
   {
     id: '1',
     name: 'Sword of Digital Power',
@@ -101,6 +110,30 @@ export const prizes: Prize[] = [
     aiHint: 'sleeping cat'
   },
 ];
+
+export const markets: Market[] = [
+  {
+    id: '1',
+    name: 'General Store',
+    description: 'Basic goods for the everyday adventurer.',
+    status: 'open',
+    items: allItems,
+  },
+  {
+    id: '2',
+    name: "The Dragon's Hoard",
+    description: 'A collection of rare artifacts, available only to the most accomplished heroes.',
+    status: 'locked',
+    unlocksAt: 10,
+    items: [],
+  },
+];
+
+/**
+ * @deprecated The `prizes` export is deprecated and will be removed in a future version. 
+ * Please use the `markets` export and access items from there.
+ */
+export const prizes: MarketItem[] = markets.flatMap(market => market.items);
 
 export const allTasksForSuggester: Task[] = [
     ...tasks,
