@@ -52,39 +52,6 @@ export default function QuestsPage() {
       <h1 className="text-4xl font-headline font-bold mb-2">Your Quests</h1>
       <p className="text-muted-foreground mb-8">Adventure awaits! Complete quests to earn rewards.</p>
       
-      <Card className="mb-8 shadow-lg">
-        <CardHeader>
-          <CardTitle className="font-headline flex items-center gap-2"><History /> Recent Activity</CardTitle>
-          <CardDescription>Your last 5 recorded activities in the Donegeon.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ul className="space-y-3">
-            {transactionHistory
-              .sort((a, b) => b.date.getTime() - a.date.getTime())
-              .slice(0, 5)
-              .map((transaction) => (
-                <li key={transaction.id} className="flex items-center justify-between text-sm">
-                  <div className="flex flex-col">
-                    <p className="font-medium">{transaction.description}</p>
-                    <p className="text-xs text-muted-foreground">{format(transaction.date, "MMM d, yyyy 'at' h:mm a")}</p>
-                  </div>
-                  <Badge
-                    variant="outline"
-                    className={cn(
-                      transaction.type === "earn"
-                        ? "text-green-600 border-green-600/50"
-                        : "text-red-600 border-red-600/50"
-                    )}
-                  >
-                    {transaction.type === 'earn' ? '+' : '-'}{transaction.change.amount.toLocaleString()} {transaction.change.currencyName}
-                  </Badge>
-                </li>
-              ))}
-          </ul>
-        </CardContent>
-      </Card>
-
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         
         {/* Left Column */}
@@ -207,6 +174,38 @@ export default function QuestsPage() {
             </Card>
         </div>
       </div>
+
+      <Card className="mt-8 shadow-lg">
+        <CardHeader>
+          <CardTitle className="font-headline flex items-center gap-2"><History /> Recent Activity</CardTitle>
+          <CardDescription>Your last 5 recorded activities in the Donegeon.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ul className="space-y-3">
+            {transactionHistory
+              .sort((a, b) => b.date.getTime() - a.date.getTime())
+              .slice(0, 5)
+              .map((transaction) => (
+                <li key={transaction.id} className="flex items-center justify-between text-sm">
+                  <div className="flex flex-col">
+                    <p className="font-medium">{transaction.description}</p>
+                    <p className="text-xs text-muted-foreground">{format(transaction.date, "MMM d, yyyy 'at' h:mm a")}</p>
+                  </div>
+                  <Badge
+                    variant="outline"
+                    className={cn(
+                      transaction.type === "earn"
+                        ? "text-green-600 border-green-600/50"
+                        : "text-red-600 border-red-600/50"
+                    )}
+                  >
+                    {transaction.type === 'earn' ? '+' : '-'}{transaction.change.amount.toLocaleString()} {transaction.change.currencyName}
+                  </Badge>
+                </li>
+              ))}
+          </ul>
+        </CardContent>
+      </Card>
     </div>
   );
 }
