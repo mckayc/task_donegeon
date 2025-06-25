@@ -27,7 +27,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <div className="flex min-h-screen">
-        <Sidebar className="bg-card dark:bg-sidebar" collapsible="icon">
+        <Sidebar className="bg-sidebar dark:bg-sidebar" collapsible="icon">
           <SidebarHeader className="p-4">
             <Link href="/dashboard" className="flex items-center gap-2">
               <AppLogo className="w-8 h-8 text-primary" />
