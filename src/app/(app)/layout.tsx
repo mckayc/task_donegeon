@@ -17,7 +17,7 @@ import {
 import { AppLogo } from "@/components/app-logo";
 import { UserNav } from "@/components/user-nav";
 import { useCurrentUser } from '@/hooks/use-current-user';
-import { ClipboardList, Repeat, Compass, Coins, Store, Shield, LogOut, Image, Users, ShoppingCart, Archive, LayoutList, Award, Activity, LayoutDashboard, Settings } from "lucide-react";
+import { ClipboardList, Repeat, Compass, Coins, Store, Shield, LogOut, Image, Users, ShoppingCart, Archive, LayoutList, Award, Activity, LayoutDashboard, Settings, CheckCheck } from "lucide-react";
 import * as Accordion from "@radix-ui/react-accordion";
 import { cn } from "@/lib/utils";
 
@@ -136,7 +136,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                           </SidebarMenuButton>
                           <Accordion.Root type="single" collapsible className="w-full">
                             <Accordion.Item value="markets-group" className="border-none">
-                              <Accordion.Trigger className={cn("flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0 group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 text-sidebar-foreground", { "bg-sidebar-accent text-sidebar-accent-foreground": pathname.startsWith('/admin/markets') || pathname.startsWith('/admin/inventory') })}>
+                              <Accordion.Trigger className={cn("flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0 group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 text-sidebar-foreground", { "bg-sidebar-accent text-sidebar-accent-foreground": pathname.startsWith('/admin/markets') || pathname.startsWith('/admin/inventory') || pathname.startsWith('/admin/approvals') })}>
                                 <Store />
                                 <span className="flex-1 text-left">Markets</span>
                                 <svg className="h-4 w-4 shrink-0 transition-transform duration-200" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 9l6 6l6-6"></path></svg>
@@ -153,6 +153,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                                     <Link href="/admin/inventory">
                                       <Archive />
                                       <span>Inventory</span>
+                                    </Link>
+                                  </SidebarMenuButton>
+                                  <SidebarMenuButton asChild isActive={pathname === '/admin/approvals'}>
+                                    <Link href="/admin/approvals">
+                                      <CheckCheck />
+                                      <span>Approvals</span>
                                     </Link>
                                   </SidebarMenuButton>
                                 </div>

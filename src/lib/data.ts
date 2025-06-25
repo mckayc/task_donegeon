@@ -111,6 +111,18 @@ export interface TransactionHistoryEntry {
   taskId: string | null;
 }
 
+export interface AdventurerStoreItem {
+  id: string;
+  name: string;
+  description: string;
+  sellerId: string;
+  cost: {
+    currencyName: CurrencyDefinition['name'];
+    amount: number;
+  };
+  approvalStatus: 'pending' | 'approved' | 'rejected';
+}
+
 export const users: User[] = [
     { id: '1', name: 'DM Dave', email: 'dave@example.com', role: 'Donegeon Master', avatar: 'https://i.pravatar.cc/150?u=dm-dave', rankId: 'rank-30', purse: { gold: 100000, gems: 50000, stardust: 200000 }, holdingPurse: { gold: 0, gems: 0, stardust: 0 } },
     { id: '2', name: 'Moderator Mary', email: 'mary@example.com', role: 'Bailiff', avatar: 'https://i.pravatar.cc/150?u=mod-mary', rankId: 'rank-15', purse: { gold: 15000, gems: 2500, stardust: 50000 }, holdingPurse: { gold: 0, gems: 0, stardust: 0 } },
@@ -404,4 +416,47 @@ export const transactionHistory: TransactionHistoryEntry[] = [
   { id: 'th-alex-5', date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), userId: '3', taskId: 'venture-2', description: 'Completed Quest: Library Book Expedition', status: 'auto-verified', change: { currencyName: 'Stardust', amount: 500 } },
   { id: 'th-alex-6', date: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000), userId: '3', taskId: null, description: 'Penalty: Left adventuring gear in the hall.', status: 'hit', change: { currencyName: 'Gold', amount: 20 } },
   { id: 'th-beth-1', date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), userId: '4', taskId: '1', description: 'Completed Quest: Clean Your Lair', status: 'pending', change: { currencyName: 'Gold', amount: 50 } },
+];
+
+export const adventurerStoreItems: AdventurerStoreItem[] = [
+  {
+    id: 'asi-1',
+    name: 'Hand-drawn map of the Whispering Woods',
+    description: 'A beautifully illustrated map I made myself. Might not be 100% accurate!',
+    sellerId: '3', // Adventurer Alex
+    cost: { currencyName: 'Gold', amount: 50 },
+    approvalStatus: 'approved',
+  },
+  {
+    id: 'asi-2',
+    name: 'I will do your "Dishes Dragon" quest for you',
+    description: 'Tired of washing dishes? I will take care of it for one evening.',
+    sellerId: '3', // Adventurer Alex
+    cost: { currencyName: 'Gems', amount: 5 },
+    approvalStatus: 'approved',
+  },
+  {
+    id: 'asi-3',
+    name: 'A Cool-Looking Rock I Found',
+    description: 'It is very smooth and has some shiny bits. Probably magical.',
+    sellerId: '4', // Adventurer Beth
+    cost: { currencyName: 'Stardust', amount: 100 },
+    approvalStatus: 'approved',
+  },
+  {
+    id: 'asi-4',
+    name: 'Custom LEGO creation',
+    description: 'I will build a small custom LEGO model of your choice (within reason and my brick supply).',
+    sellerId: '3', // Adventurer Alex
+    cost: { currencyName: 'Gold', amount: 150 },
+    approvalStatus: 'pending',
+  },
+    {
+    id: 'asi-5',
+    name: 'Guaranteed joke',
+    description: 'I will tell you a joke. No refunds if you don\'t laugh.',
+    sellerId: '4', // Adventurer Beth
+    cost: { currencyName: 'Gold', amount: 5 },
+    approvalStatus: 'rejected',
+  },
 ];
