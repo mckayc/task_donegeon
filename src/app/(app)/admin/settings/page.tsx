@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,10 +14,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
+import { Moon, Sun } from "lucide-react";
 
 export default function SettingsPage() {
-
   const { toast } = useToast();
+  const { theme, setTheme } = useTheme();
 
   const handleSave = () => {
     // In a real application, you would save these settings to a database.
@@ -38,9 +40,9 @@ export default function SettingsPage() {
       <div className="grid gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>General</CardTitle>
+            <CardTitle>Profile</CardTitle>
             <CardDescription>
-              Manage general settings for your Donegeon.
+              This is how others will see you on the site.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -52,27 +54,43 @@ export default function SettingsPage() {
                 placeholder="Your Donegeon's Name"
               />
             </div>
+             <div className="space-y-2">
+              <Label htmlFor="profile-name">Name</Label>
+              <Input id="profile-name" defaultValue="Donegeon Master" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="profile-email">Email</Label>
+              <Input id="profile-email" type="email" defaultValue="admin@taskdonegeon.com" />
+            </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Moderation</CardTitle>
+            <CardTitle>Appearance</CardTitle>
             <CardDescription>
-              Configure rules for applying penalties and rewards.
+              Customize the look and feel of your Donegeon.
             </CardDescription>
           </CardHeader>
-          <CardContent className="divide-y divide-border">
+          <CardContent>
             <div className="flex items-center justify-between py-4">
               <div>
-                <Label htmlFor="setbacks-in-debt" className="font-normal">
-                  Allow Setbacks to Cause Debt
+                <Label htmlFor="dark-mode" className="font-normal">
+                  Theme
                 </Label>
                 <p className="text-sm text-muted-foreground">
-                  If enabled, a user's currency can go into negative values.
+                  Switch between light and dark mode.
                 </p>
               </div>
-              <Switch id="setbacks-in-debt" />
+              <div className="flex items-center gap-2">
+                <Sun className="h-5 w-5" />
+                <Switch
+                  id="dark-mode"
+                  checked={theme === 'dark'}
+                  onCheckedChange={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                />
+                <Moon className="h-5 w-5" />
+              </div>
             </div>
           </CardContent>
         </Card>
