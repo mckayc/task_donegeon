@@ -121,6 +121,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                             <span>Digital Assets</span>
                           </Link>
                         </SidebarMenuButton>
+                         <SidebarMenuButton asChild isActive={pathname === '/admin/users'}>
+                           <Link href="/admin/users">
+                            <Users />
+                            <span>Users</span>
+                          </Link>
+                        </SidebarMenuButton>
                       </div>
                     </Accordion.Content>
                   </Accordion.Item>

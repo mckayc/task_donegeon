@@ -58,6 +58,7 @@ export default function InventoryPage() {
                 <TableHead>Markets</TableHead>
                 <TableHead>Cost</TableHead>
                 <TableHead>Stock</TableHead>
+                <TableHead>Limit</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>
                   <span className="sr-only">Actions</span>
@@ -77,7 +78,7 @@ export default function InventoryPage() {
                       data-ai-hint={item.aiHint}
                     />
                   </TableCell>
-                  <TableCell className="font-medium">{item.name}</TableCell>
+                  <TableCell className="font-medium max-w-[150px] truncate">{item.name}</TableCell>
                    <TableCell className="max-w-[200px]">
                     <div className="flex flex-wrap gap-1">
                       {item.markets.map(market => <Badge key={market} variant="secondary">{market}</Badge>)}
@@ -93,6 +94,15 @@ export default function InventoryPage() {
                       </span>
                       {item.notifyAt !== null && <span className="text-xs text-muted-foreground">(Notify at {item.notifyAt})</span>}
                     </div>
+                  </TableCell>
+                   <TableCell>
+                    {item.limit.period !== 'none' && item.limit.amount ? (
+                      <Badge variant="outline" className="capitalize">
+                        {item.limit.amount} / {item.limit.period.slice(0, -2)}
+                      </Badge>
+                    ) : (
+                      <span className="text-muted-foreground">None</span>
+                    )}
                   </TableCell>
                   <TableCell>
                      <Badge variant={item.availability === "available" ? "default" : "secondary"}>

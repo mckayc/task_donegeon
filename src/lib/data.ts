@@ -36,6 +36,10 @@ export interface InventoryItem extends MarketItem {
   notifyAt: number | null;
   availability: 'available' | 'unavailable';
   markets: string[];
+  limit: {
+    period: 'none' | 'daily' | 'weekly' | 'monthly';
+    amount: number | null;
+  };
 }
 
 export interface Market {
@@ -51,7 +55,6 @@ export interface MarketplaceMarket extends Market {
     icon: LucideIcon;
 }
 
-
 export interface DigitalAsset {
   id: string;
   name: string;
@@ -59,6 +62,21 @@ export interface DigitalAsset {
   image: string;
   aiHint: string;
 }
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: 'Donegeon Master' | 'Bailiff' | 'Adventurer';
+  avatar: string;
+}
+
+export const users: User[] = [
+    { id: '1', name: 'DM Dave', email: 'dave@example.com', role: 'Donegeon Master', avatar: 'https://i.pravatar.cc/150?u=dm-dave' },
+    { id: '2', name: 'Moderator Mary', email: 'mary@example.com', role: 'Bailiff', avatar: 'https://i.pravatar.cc/150?u=mod-mary' },
+    { id: '3', name: 'Adventurer Alex', email: 'alex@example.com', role: 'Adventurer', avatar: 'https://i.pravatar.cc/150?u=adv-alex' },
+    { id: '4', name: 'Adventurer Beth', email: 'beth@example.com', role: 'Adventurer', avatar: 'https://i.pravatar.cc/150?u=adv-beth' },
+];
 
 export const digitalAssets: DigitalAsset[] = [
   { id: 'da1', name: 'Knight Helmet', category: 'Avatar', image: 'https://placehold.co/200x200.png', aiHint: 'knight helmet' },
@@ -146,6 +164,7 @@ export const inventoryItems: InventoryItem[] = [
     notifyAt: 2,
     availability: 'available',
     markets: ["The Royal Scribe's Pass"],
+    limit: { period: 'daily', amount: 1 },
   },
   {
     id: '2',
@@ -158,6 +177,7 @@ export const inventoryItems: InventoryItem[] = [
     notifyAt: null,
     availability: 'available',
     markets: ["The Wayfarer's Guild"],
+    limit: { period: 'weekly', amount: 1 },
   },
   {
     id: '3',
@@ -170,6 +190,7 @@ export const inventoryItems: InventoryItem[] = [
     notifyAt: 1,
     availability: 'available',
     markets: ["The Apothecary's Confections"],
+    limit: { period: 'none', amount: null },
   },
   {
     id: '4',
@@ -182,6 +203,7 @@ export const inventoryItems: InventoryItem[] = [
     notifyAt: null,
     availability: 'unavailable',
     markets: ["The Royal Scribe's Pass"],
+    limit: { period: 'none', amount: null },
   },
 ];
 
