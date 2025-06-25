@@ -1,9 +1,9 @@
 
 import type { LucideIcon } from "lucide-react";
-import { Coins, Gem, Star, ScrollText, Banknote, FlaskConical, Brush, Map } from 'lucide-react';
+import { Coins, Gem, Star, ScrollText, Banknote, FlaskConical, Brush, Map, Timer, CheckCircle, Clock } from 'lucide-react';
 
 export interface CurrencyDefinition {
-  name: string;
+  name: 'Gold' | 'Gems' | 'Stardust';
   icon: LucideIcon;
   isDeletable: boolean;
 }
@@ -13,11 +13,15 @@ export interface Task {
   title: string;
   description: string;
   reward: {
-    currencyName: string;
+    currencyName: CurrencyDefinition['name'];
     amount: number;
   };
   status: 'active' | 'completed';
   type: 'duty' | 'venture';
+  verification: {
+    type: 'manual' | 'auto' | 'timed';
+    delayMinutes?: number;
+  }
 }
 
 export interface MarketItem {
@@ -25,7 +29,7 @@ export interface MarketItem {
   name: string;
   description: string;
   cost: {
-    currencyName: string;
+    currencyName: CurrencyDefinition['name'];
     amount: number;
   };
   image: string;
@@ -64,6 +68,12 @@ export interface DigitalAsset {
   aiHint: string;
 }
 
+export type Purse = {
+  gold: number;
+  gems: number;
+  stardust: number;
+}
+
 export interface User {
   id: string;
   name: string;
@@ -71,11 +81,8 @@ export interface User {
   role: 'Donegeon Master' | 'Bailiff' | 'Adventurer';
   avatar: string;
   rankId: string;
-  purse: {
-    gold: number;
-    gems: number;
-    stardust: number;
-  };
+  purse: Purse;
+  holdingPurse: Purse;
 }
 
 export interface Rank {
@@ -91,19 +98,21 @@ export interface Rank {
 export interface TransactionHistoryEntry {
   id: string;
   date: Date;
+  userId: string;
   description: string;
-  type: 'earn' | 'spend';
+  status: 'verified' | 'pending' | 'retry' | 'hit' | 'spend' | 'auto-verified';
   change: {
-    currencyName: 'Gold' | 'Gems' | 'Stardust';
+    currencyName: CurrencyDefinition['name'];
     amount: number;
   };
+  taskId: string | null;
 }
 
 export const users: User[] = [
-    { id: '1', name: 'DM Dave', email: 'dave@example.com', role: 'Donegeon Master', avatar: 'https://i.pravatar.cc/150?u=dm-dave', rankId: 'rank-30', purse: { gold: 100000, gems: 50000, stardust: 200000 } },
-    { id: '2', name: 'Moderator Mary', email: 'mary@example.com', role: 'Bailiff', avatar: 'https://i.pravatar.cc/150?u=mod-mary', rankId: 'rank-15', purse: { gold: 15000, gems: 2500, stardust: 50000 } },
-    { id: '3', name: 'Adventurer Alex', email: 'alex@example.com', role: 'Adventurer', avatar: 'https://i.pravatar.cc/150?u=adv-alex', rankId: 'rank-5', purse: { gold: 1095, gems: 310, stardust: 5500 } },
-    { id: '4', name: 'Adventurer Beth', email: 'beth@example.com', role: 'Adventurer', avatar: 'https://i.pravatar.cc/150?u=adv-beth', rankId: 'rank-2', purse: { gold: 450, gems: 50, stardust: 1200 } },
+    { id: '1', name: 'DM Dave', email: 'dave@example.com', role: 'Donegeon Master', avatar: 'https://i.pravatar.cc/150?u=dm-dave', rankId: 'rank-30', purse: { gold: 100000, gems: 50000, stardust: 200000 }, holdingPurse: { gold: 0, gems: 0, stardust: 0 } },
+    { id: '2', name: 'Moderator Mary', email: 'mary@example.com', role: 'Bailiff', avatar: 'https://i.pravatar.cc/150?u=mod-mary', rankId: 'rank-15', purse: { gold: 15000, gems: 2500, stardust: 50000 }, holdingPurse: { gold: 0, gems: 0, stardust: 0 } },
+    { id: '3', name: 'Adventurer Alex', email: 'alex@example.com', role: 'Adventurer', avatar: 'https://i.pravatar.cc/150?u=adv-alex', rankId: 'rank-5', purse: { gold: 1095, gems: 310, stardust: 5500 }, holdingPurse: { gold: 75, gems: 0, stardust: 0 } },
+    { id: '4', name: 'Adventurer Beth', email: 'beth@example.com', role: 'Adventurer', avatar: 'https://i.pravatar.cc/150?u=adv-beth', rankId: 'rank-2', purse: { gold: 450, gems: 50, stardust: 1200 }, holdingPurse: { gold: 50, gems: 0, stardust: 0 } },
 ];
 
 const rankNames = [
@@ -165,6 +174,7 @@ export const tasks: Task[] = [
     reward: { currencyName: 'Gold', amount: 50 },
     status: 'active',
     type: 'duty',
+    verification: { type: 'timed', delayMinutes: 60 },
   },
   {
     id: '2',
@@ -173,6 +183,7 @@ export const tasks: Task[] = [
     reward: { currencyName: 'Gold', amount: 75 },
     status: 'active',
     type: 'duty',
+    verification: { type: 'manual' },
   },
   {
     id: '3',
@@ -181,6 +192,7 @@ export const tasks: Task[] = [
     reward: { currencyName: 'Gold', amount: 40 },
     status: 'active',
     type: 'duty',
+    verification: { type: 'auto' },
   },
     {
     id: '4',
@@ -189,6 +201,7 @@ export const tasks: Task[] = [
     reward: { currencyName: 'Gems', amount: 10 },
     status: 'completed',
     type: 'venture',
+    verification: { type: 'manual' },
   },
   {
     id: 'venture-2',
@@ -197,6 +210,7 @@ export const tasks: Task[] = [
     reward: { currencyName: 'Stardust', amount: 500 },
     status: 'active',
     type: 'venture',
+    verification: { type: 'auto' },
   },
   {
     id: 'duty-4',
@@ -204,7 +218,8 @@ export const tasks: Task[] = [
     description: 'Ensure the household pets are fed and have fresh water.',
     reward: { currencyName: 'Gold', amount: 25 },
     status: 'active',
-    type: 'duty'
+    type: 'duty',
+    verification: { type: 'auto' },
   }
 ];
 
@@ -334,7 +349,8 @@ export const allTasksForSuggester: Task[] = [
         description: 'Take the family pet for a 20-minute walk.',
         reward: { currencyName: 'Gold', amount: 30 },
         status: 'completed',
-        type: 'duty'
+        type: 'duty',
+        verification: { type: 'manual' },
     },
     {
         id: '6',
@@ -342,18 +358,17 @@ export const allTasksForSuggester: Task[] = [
         description: 'Read a chapter of a book for 30 minutes.',
         reward: { currencyName: 'Stardust', amount: 200 },
         status: 'completed',
-        type: 'duty'
+        type: 'duty',
+        verification: { type: 'auto' },
     }
 ]
 
 export const transactionHistory: TransactionHistoryEntry[] = [
-  { id: 'th1', date: new Date('2024-07-20T10:00:00Z'), description: 'Completed Quest: Yard Guardian', type: 'earn', change: { currencyName: 'Gems', amount: 10 } },
-  { id: 'th2', date: new Date('2024-07-21T15:30:00Z'), description: 'Completed Quest: The Dishes Dragon', type: 'earn', change: { currencyName: 'Gold', amount: 40 } },
-  { id: 'th3', date: new Date('2024-07-22T09:00:00Z'), description: 'Purchased: Sword of Digital Power', type: 'spend', change: { currencyName: 'Gold', amount: 200 } },
-  { id: 'th4', date: new Date('2024-07-23T18:00:00Z'), description: 'Completed Quest: Feed the Familiars', type: 'earn', change: { currencyName: 'Gold', amount: 25 } },
-  { id: 'th5', date: new Date('2024-07-24T11:00:00Z'), description: 'Completed Quest: Library Book Expedition', type: 'earn', change: { currencyName: 'Stardust', amount: 500 } },
-  { id: 'th6', date: new Date('2024-07-19T10:00:00Z'), description: 'Initial Balance', type: 'earn', change: { currencyName: 'Gold', amount: 1250 } },
-  { id: 'th7', date: new Date('2024-07-19T10:00:00Z'), description: 'Initial Balance', type: 'earn', change: { currencyName: 'Gems', amount: 300 } },
-  { id: 'th8', date: new Date('2024-07-19T10:00:00Z'), description: 'Initial Balance', type: 'earn', change: { currencyName: 'Stardust', amount: 5000 } },
-  { id: 'th9', date: new Date('2024-07-25T09:00:00Z'), description: 'Penalty: Left adventuring gear in the hall.', type: 'spend', change: { currencyName: 'Gold', amount: 20 } },
+  { id: 'th-alex-1', date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), userId: '3', taskId: '2', description: 'Completed Quest: Homework Quest', status: 'pending', change: { currencyName: 'Gold', amount: 75 } },
+  { id: 'th-alex-2', date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), userId: '3', taskId: '4', description: 'Completed Quest: Yard Guardian', status: 'verified', change: { currencyName: 'Gems', amount: 10 } },
+  { id: 'th-alex-3', date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), userId: '3', taskId: null, description: 'Purchased: Sword of Digital Power', status: 'spend', change: { currencyName: 'Gold', amount: 200 } },
+  { id: 'th-alex-4', date: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000), userId: '3', taskId: 'duty-4', description: 'Completed Quest: Feed the Familiars', status: 'auto-verified', change: { currencyName: 'Gold', amount: 25 } },
+  { id: 'th-alex-5', date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), userId: '3', taskId: 'venture-2', description: 'Completed Quest: Library Book Expedition', status: 'auto-verified', change: { currencyName: 'Stardust', amount: 500 } },
+  { id: 'th-alex-6', date: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000), userId: '3', taskId: null, description: 'Penalty: Left adventuring gear in the hall.', status: 'hit', change: { currencyName: 'Gold', amount: 20 } },
+  { id: 'th-beth-1', date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), userId: '4', taskId: '1', description: 'Completed Quest: Clean Your Lair', status: 'pending', change: { currencyName: 'Gold', amount: 50 } },
 ];

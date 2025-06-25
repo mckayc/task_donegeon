@@ -47,6 +47,8 @@ export default function QuestsPage() {
     return <div>Loading...</div>;
   }
 
+  const userTransactions = transactionHistory.filter(t => t.userId === currentUser.id);
+
   return (
     <div className="container mx-auto p-0">
       <h1 className="text-4xl font-headline font-bold mb-2">Your Quests</h1>
@@ -182,27 +184,39 @@ export default function QuestsPage() {
         </CardHeader>
         <CardContent>
           <ul className="space-y-3">
-            {transactionHistory
+            {userTransactions
               .sort((a, b) => b.date.getTime() - a.date.getTime())
               .slice(0, 5)
-              .map((transaction) => (
-                <li key={transaction.id} className="flex items-center justify-between text-sm">
-                  <div className="flex flex-col">
-                    <p className="font-medium">{transaction.description}</p>
-                    <p className="text-xs text-muted-foreground">{format(transaction.date, "MMM d, yyyy 'at' h:mm a")}</p>
-                  </div>
-                  <Badge
-                    variant="outline"
-                    className={cn(
-                      transaction.type === "earn"
-                        ? "text-green-600 border-green-600/50"
-                        : "text-red-600 border-red-600/50"
-                    )}
-                  >
-                    {transaction.type === 'earn' ? '+' : '-'}{transaction.change.amount.toLocaleString()} {transaction.change.currencyName}
-                  </Badge>
-                </li>
-              ))}
+              .map((transaction) => {
+                const isEarn = ['verified', 'auto-verified'].includes(transaction.status);
+                const isSpend = ['spend', 'hit'].includes(transaction.status);
+                const isPending = transaction.status === 'pending';
+                return (
+                  <li key={transaction.id} className="flex items-center justify-between text-sm">
+                    <div className="flex flex-col">
+                      <p className="font-medium">{transaction.description}</p>
+                      <p className="text-xs text-muted-foreground">{format(transaction.date, "MMM d, yyyy 'at' h:mm a")}</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                       <Badge variant="outline" className={cn({
+                          "text-yellow-600 border-yellow-600/50": isPending,
+                       })}>
+                        {transaction.status}
+                      </Badge>
+                      <Badge
+                        variant="outline"
+                        className={cn(
+                          isEarn && "text-green-600 border-green-600/50",
+                          isSpend && "text-red-600 border-red-600/50",
+                          isPending && "text-yellow-600 border-yellow-600/50"
+                        )}
+                      >
+                        {isEarn ? '+' : isSpend ? '-' : ''}{transaction.change.amount.toLocaleString()} {transaction.change.currencyName}
+                      </Badge>
+                    </div>
+                  </li>
+                )
+              })}
           </ul>
         </CardContent>
       </Card>
