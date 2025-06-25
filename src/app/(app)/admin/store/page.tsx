@@ -15,7 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { prizes } from "@/lib/data";
+import { inventoryItems as prizes } from "@/lib/data";
 import { MoreHorizontal, PlusCircle } from "lucide-react";
 import {
   DropdownMenu,
