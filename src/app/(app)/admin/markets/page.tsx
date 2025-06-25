@@ -14,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { markets } from "@/lib/data";
+import { marketplaceMarkets } from "@/lib/data";
 import { MoreHorizontal, PlusCircle } from "lucide-react";
 import {
   DropdownMenu,
@@ -50,6 +50,7 @@ export default function MarketsPage() {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className="w-16">Icon</TableHead>
                 <TableHead>Name</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead className="hidden md:table-cell">Items</TableHead>
@@ -60,12 +61,15 @@ export default function MarketsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {markets.map((market) => (
+              {marketplaceMarkets.map((market) => (
                 <TableRow key={market.id}>
+                  <TableCell>
+                    <market.icon className="w-6 h-6 text-accent" />
+                  </TableCell>
                   <TableCell className="font-medium">{market.name}</TableCell>
                   <TableCell>
                     <Badge variant={market.status === "open" ? "default" : "secondary"}>
-                      {market.status === 'open' ? 'Always Open' : 'Locked'}
+                      {market.status === 'open' ? 'Open' : 'Locked'}
                     </Badge>
                   </TableCell>
                   <TableCell className="hidden md:table-cell">

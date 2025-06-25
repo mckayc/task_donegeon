@@ -17,7 +17,7 @@ import { AppLogo } from "@/components/app-logo";
 import { Button } from "@/components/ui/button";
 import { UserNav } from "@/components/user-nav";
 import { useIsAdmin } from "@/hooks/use-is-admin";
-import { ClipboardList, Repeat, Compass, Coins, Store, Shield, LogOut, Image, Users, ShoppingCart } from "lucide-react";
+import { ClipboardList, Repeat, Compass, Coins, Store, Shield, LogOut, Image, Users, ShoppingCart, Archive, LayoutList } from "lucide-react";
 import * as Accordion from "@radix-ui/react-accordion";
 import { cn } from "@/lib/utils";
 
@@ -90,12 +90,31 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                             <span>Currencies</span>
                           </Link>
                         </SidebarMenuButton>
-                         <SidebarMenuButton asChild isActive={pathname === '/admin/markets'}>
-                           <Link href="/admin/markets">
-                            <Store />
-                            <span>Markets</span>
-                          </Link>
-                        </SidebarMenuButton>
+                        <Accordion.Root type="single" collapsible className="w-full">
+                          <Accordion.Item value="markets-group" className="border-none">
+                            <Accordion.Trigger className={cn("flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0 group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 text-sidebar-foreground", { "bg-sidebar-accent text-sidebar-accent-foreground": pathname.startsWith('/admin/markets') || pathname.startsWith('/admin/inventory') })}>
+                              <Store />
+                              <span className="flex-1 text-left">Markets</span>
+                              <svg className="h-4 w-4 shrink-0 transition-transform duration-200" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 9l6 6l6-6"></path></svg>
+                            </Accordion.Trigger>
+                            <Accordion.Content className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+                              <div className="pl-8 flex flex-col gap-1 py-1">
+                                <SidebarMenuButton asChild isActive={pathname === '/admin/markets'}>
+                                  <Link href="/admin/markets">
+                                    <LayoutList />
+                                    <span>Manage Markets</span>
+                                  </Link>
+                                </SidebarMenuButton>
+                                <SidebarMenuButton asChild isActive={pathname === '/admin/inventory'}>
+                                  <Link href="/admin/inventory">
+                                    <Archive />
+                                    <span>Inventory</span>
+                                  </Link>
+                                </SidebarMenuButton>
+                              </div>
+                            </Accordion.Content>
+                          </Accordion.Item>
+                        </Accordion.Root>
                         <SidebarMenuButton asChild isActive={pathname === '/admin/digital-assets'}>
                            <Link href="/admin/digital-assets">
                             <Image />

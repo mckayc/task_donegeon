@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { Coins, Gem, Star, Award, Sword, Shield, ScrollText, Banknote, FlaskConical, Brush, Map } from 'lucide-react';
+import { Coins, Gem, Star, ScrollText, Banknote, FlaskConical, Brush, Map } from 'lucide-react';
 
 export interface Currency {
   name: string;
@@ -29,6 +29,13 @@ export interface MarketItem {
   };
   image: string;
   aiHint: string;
+}
+
+export interface InventoryItem extends MarketItem {
+  stock: number | 'infinite';
+  notifyAt: number | null;
+  availability: 'available' | 'unavailable';
+  markets: string[];
 }
 
 export interface Market {
@@ -127,14 +134,18 @@ export const tasks: Task[] = [
   }
 ];
 
-const allItems: MarketItem[] = [
+export const inventoryItems: InventoryItem[] = [
   {
     id: '1',
     name: 'Sword of Digital Power',
     description: 'An extra hour of video game time.',
     cost: { currencyName: 'Gold', amount: 200 },
     image: 'https://placehold.co/600x400.png',
-    aiHint: 'glowing sword'
+    aiHint: 'glowing sword',
+    stock: 10,
+    notifyAt: 2,
+    availability: 'available',
+    markets: ["The Royal Scribe's Pass"],
   },
   {
     id: '2',
@@ -142,7 +153,11 @@ const allItems: MarketItem[] = [
     description: 'Choose the movie for family movie night.',
     cost: { currencyName: 'Gold', amount: 350 },
     image: 'https://placehold.co/600x400.png',
-    aiHint: 'movie tickets'
+    aiHint: 'movie tickets',
+    stock: 'infinite',
+    notifyAt: null,
+    availability: 'available',
+    markets: ["The Wayfarer's Guild"],
   },
   {
     id: '3',
@@ -150,7 +165,11 @@ const allItems: MarketItem[] = [
     description: 'A special trip to your favorite ice cream shop.',
     cost: { currencyName: 'Gems', amount: 50 },
     image: 'https://placehold.co/600x400.png',
-    aiHint: 'ice cream'
+    aiHint: 'ice cream',
+    stock: 5,
+    notifyAt: 1,
+    availability: 'available',
+    markets: ["The Apothecary's Confections"],
   },
   {
     id: '4',
@@ -158,7 +177,11 @@ const allItems: MarketItem[] = [
     description: 'Sleep in an extra 30 minutes on a weekend.',
     cost: { currencyName: 'Stardust', amount: 1000 },
     image: 'https://placehold.co/600x400.png',
-    aiHint: 'sleeping cat'
+    aiHint: 'sleeping cat',
+    stock: 'infinite',
+    notifyAt: null,
+    availability: 'unavailable',
+    markets: ["The Royal Scribe's Pass"],
   },
 ];
 
@@ -168,7 +191,7 @@ export const markets: Market[] = [
     name: 'General Store',
     description: 'Basic goods for the everyday adventurer.',
     status: 'open',
-    items: allItems,
+    items: inventoryItems,
   },
   {
     id: '2',
@@ -224,13 +247,6 @@ export const marketplaceMarkets: MarketplaceMarket[] = [
     items: [],
   }
 ];
-
-
-/**
- * @deprecated The `prizes` export is deprecated and will be removed in a future version. 
- * Please use the `markets` export and access items from there.
- */
-export const prizes: MarketItem[] = markets.flatMap(market => market.items);
 
 export const allTasksForSuggester: Task[] = [
     ...tasks,
