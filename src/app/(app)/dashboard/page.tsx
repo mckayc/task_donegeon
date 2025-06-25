@@ -178,33 +178,35 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
 
-            <Card className="shadow-lg">
-              <CardHeader>
-                  <CardTitle className="font-headline flex items-center gap-2"><Repeat /> Daily & Recurring Duties</CardTitle>
-                  <CardDescription>The backbone of a true adventurer's discipline. You have {activeDutiesCount} active duties.</CardDescription>
-              </CardHeader>
-              <CardFooter>
-                 <Button asChild className="w-full">
-                  <Link href="/duties">
-                    View All Duties <ArrowRight className="ml-2" />
-                  </Link>
-                </Button>
-              </CardFooter>
-            </Card>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              <Card className="shadow-lg">
+                <CardHeader>
+                    <CardTitle className="font-headline flex items-center gap-2"><Repeat /> Daily & Recurring Duties</CardTitle>
+                    <CardDescription>The backbone of a true adventurer's discipline. You have {activeDutiesCount} active duties.</CardDescription>
+                </CardHeader>
+                <CardFooter>
+                   <Button asChild className="w-full">
+                    <Link href="/duties">
+                      View All Duties <ArrowRight className="ml-2" />
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
 
-             <Card className="shadow-lg">
-              <CardHeader>
-                  <CardTitle className="font-headline flex items-center gap-2"><Compass /> Unique Ventures</CardTitle>
-                  <CardDescription>One-time quests for special rewards. There are {activeVenturesCount} ventures available.</CardDescription>
-              </CardHeader>
-              <CardFooter>
-                 <Button asChild className="w-full">
-                  <Link href="/ventures">
-                    View All Ventures <ArrowRight className="ml-2" />
-                  </Link>
-                </Button>
-              </CardFooter>
-            </Card>
+               <Card className="shadow-lg">
+                <CardHeader>
+                    <CardTitle className="font-headline flex items-center gap-2"><Compass /> Unique Ventures</CardTitle>
+                    <CardDescription>One-time quests for special rewards. There are {activeVenturesCount} ventures available.</CardDescription>
+                </CardHeader>
+                <CardFooter>
+                   <Button asChild className="w-full">
+                    <Link href="/ventures">
+                      View All Ventures <ArrowRight className="ml-2" />
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+            </div>
         </div>
       </div>
     </div>
