@@ -16,7 +16,7 @@ import {
 import { AppLogo } from "@/components/app-logo";
 import { UserNav } from "@/components/user-nav";
 import { useIsAdmin } from "@/hooks/use-is-admin";
-import { ClipboardList, Repeat, Compass, Coins, Store, Shield, LogOut, Image, Users, ShoppingCart, Archive, LayoutList, Award, Activity, LayoutDashboard } from "lucide-react";
+import { ClipboardList, Repeat, Compass, Coins, Store, Shield, LogOut, Image, Users, ShoppingCart, Archive, LayoutList, Award, Activity, LayoutDashboard, Settings } from "lucide-react";
 import * as Accordion from "@radix-ui/react-accordion";
 import { cn } from "@/lib/utils";
 
@@ -164,6 +164,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                              <Link href="/admin/users">
                               <Users />
                               <span>Users</span>
+                            </Link>
+                          </SidebarMenuButton>
+                          <SidebarMenuButton asChild isActive={pathname === '/admin/settings'}>
+                             <Link href="/admin/settings">
+                              <Settings />
+                              <span>Settings</span>
                             </Link>
                           </SidebarMenuButton>
                         </div>
