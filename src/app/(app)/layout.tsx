@@ -12,17 +12,21 @@ import {
   SidebarMenuButton,
   SidebarFooter,
   SidebarTrigger,
+  SidebarSeparator,
 } from "@/components/ui/sidebar"
 import { AppLogo } from "@/components/app-logo";
 import { UserNav } from "@/components/user-nav";
-import { useIsAdmin } from "@/hooks/use-is-admin";
+import { useCurrentUser } from '@/hooks/use-current-user';
 import { ClipboardList, Repeat, Compass, Coins, Store, Shield, LogOut, Image, Users, ShoppingCart, Archive, LayoutList, Award, Activity, LayoutDashboard, Settings } from "lucide-react";
 import * as Accordion from "@radix-ui/react-accordion";
 import { cn } from "@/lib/utils";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isAdmin = useIsAdmin();
+  const currentUser = useCurrentUser();
+
+  const isDM = currentUser.role === 'Donegeon Master';
+  const isBailiff = currentUser.role === 'Bailiff';
 
   return (
     <SidebarProvider>
@@ -86,8 +90,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
-              {isAdmin && (
+              {/* Admin & Moderator Section */}
+              {(isBailiff || isDM) && (
                 <>
+                  <SidebarSeparator className="my-2" />
                   <SidebarMenuItem>
                      <SidebarMenuButton asChild isActive={pathname === '/user-dashboard'}>
                         <Link href="/user-dashboard">
@@ -96,6 +102,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                         </Link>
                       </SidebarMenuButton>
                   </SidebarMenuItem>
+                </>
+              )}
+
+              {/* DM Only Section */}
+              {isDM && (
                   <Accordion.Root type="single" collapsible defaultValue="admin" className="w-full">
                     <Accordion.Item value="admin" className="border-none">
                       <Accordion.Trigger className={cn("flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0 group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 text-sidebar-foreground")}>
@@ -176,7 +187,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                       </Accordion.Content>
                     </Accordion.Item>
                   </Accordion.Root>
-                </>
               )}
             </SidebarMenu>
           </SidebarContent>
