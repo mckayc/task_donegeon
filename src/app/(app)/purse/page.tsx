@@ -15,15 +15,22 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { currencyDefinitions, transactionHistory, users, digitalAssets } from "@/lib/data";
 import { format } from "date-fns";
-import { Wallet, Gift } from "lucide-react";
+import { Wallet, Gift, XCircle, Hourglass } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function PurseHistoryPage() {
   // For demo purposes, let's assume the current user is Adventurer Alex
   const currentUser = users.find(u => u.id === '3');
   const userTransactions = transactionHistory.filter(t => t.userId === currentUser?.id);
+
+  if (!currentUser) {
+    return <div>Loading...</div>;
+  }
+  
+  const hasHolding = Object.values(currentUser.holdingPurse).some(v => v > 0);
 
   const totalEarnings = {
     Gold: userTransactions
@@ -37,10 +44,6 @@ export default function PurseHistoryPage() {
       .reduce((acc, t) => acc + (t.change?.amount || 0), 0),
   };
 
-  if (!currentUser) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center">
@@ -53,7 +56,7 @@ export default function PurseHistoryPage() {
         <CardHeader>
           <CardTitle>Summary</CardTitle>
           <CardDescription>
-            A summary of your current balance vs. total lifetime earnings.
+            A summary of your current balance and total lifetime earnings.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -66,13 +69,23 @@ export default function PurseHistoryPage() {
                 </div>
                 <div className="flex justify-between items-baseline">
                   <span className="text-sm text-muted-foreground">
-                    Current Balance:
+                    Available:
                   </span>
                   <span className="font-mono text-xl font-bold">
                     {currentUser.purse[currency.name.toLowerCase() as keyof typeof currentUser.purse].toLocaleString()}
                   </span>
                 </div>
-                <div className="flex justify-between items-baseline text-sm">
+                {currentUser.holdingPurse[currency.name.toLowerCase() as keyof typeof currentUser.holdingPurse] > 0 && (
+                   <div className="flex justify-between items-baseline text-sm">
+                    <span className="text-muted-foreground">
+                      In Holding:
+                    </span>
+                    <span className="font-mono">
+                      {currentUser.holdingPurse[currency.name.toLowerCase() as keyof typeof currentUser.holdingPurse].toLocaleString()}
+                    </span>
+                  </div>
+                )}
+                <div className="flex justify-between items-baseline text-sm mt-2 pt-2 border-t border-dashed">
                   <span className="text-muted-foreground">
                     Total Earned:
                   </span>
@@ -102,7 +115,9 @@ export default function PurseHistoryPage() {
               <TableRow>
                 <TableHead>Date</TableHead>
                 <TableHead>Description</TableHead>
+                <TableHead>Status</TableHead>
                 <TableHead className="text-right">Amount</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -110,18 +125,26 @@ export default function PurseHistoryPage() {
                 .sort((a, b) => b.date.getTime() - a.date.getTime())
                 .map((transaction) => {
                   const isEarn = ['verified', 'auto-verified'].includes(transaction.status);
-                  const isSpend = ['spend', 'setback'].includes(transaction.status);
+                  const isSpend = transaction.status === 'spend';
+                  const isSetback = transaction.status === 'setback';
                   const isPending = transaction.status === 'pending';
                   const isAward = transaction.status === 'awarded';
                   const asset = isAward && transaction.assetId ? digitalAssets.find(da => da.id === transaction.assetId) : null;
+                  
+                  const isPendingPurchase = isPending && transaction.description.startsWith('Purchased:');
 
                   return (
                     <TableRow key={transaction.id}>
-                      <TableCell className="text-muted-foreground">
-                        {format(transaction.date, "MMM d, yyyy")}
+                      <TableCell className="text-muted-foreground text-xs">
+                        {format(transaction.date, "MMM d, yyyy h:mm a")}
                       </TableCell>
                       <TableCell className="font-medium">
                         {transaction.description}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={isSetback || transaction.status === 'cancelled' ? 'destructive' : isPending ? 'secondary' : 'outline'} className="capitalize">
+                          {transaction.status}
+                        </Badge>
                       </TableCell>
                       <TableCell className="text-right">
                          {transaction.change ? (
@@ -129,11 +152,11 @@ export default function PurseHistoryPage() {
                             variant="outline"
                             className={cn(
                               isEarn && "text-green-600 border-green-600/50",
-                              isSpend && "text-red-600 border-red-600/50",
+                              (isSpend || isSetback) && "text-red-600 border-red-600/50",
                               isPending && "text-yellow-600 border-yellow-600/50"
                             )}
                           >
-                            {isEarn ? '+' : isSpend ? '-' : ''}{transaction.change.amount.toLocaleString()}{" "}
+                            {isEarn ? '+' : (isSpend || isSetback) ? '-' : ''}{transaction.change.amount.toLocaleString()}{" "}
                             {transaction.change.currencyName}
                           </Badge>
                          ) : isAward && asset ? (
@@ -142,9 +165,17 @@ export default function PurseHistoryPage() {
                              Award: {asset.name}
                           </Badge>
                          ) : (
-                           <Badge variant="secondary">{transaction.status}</Badge>
+                           <span className="text-muted-foreground">--</span>
                          )}
                       </TableCell>
+                       <TableCell className="text-right">
+                         {isPendingPurchase && (
+                          <Button size="sm" variant="ghost" className="text-red-500 hover:text-red-600" disabled>
+                             <XCircle className="mr-2 h-4 w-4" />
+                             Cancel
+                          </Button>
+                         )}
+                       </TableCell>
                     </TableRow>
                   )
               })}

@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { currencyDefinitions, tasks, earnedAssets, users, ranks, digitalAssets, transactionHistory, type Task } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
-import { Trophy, Award, History, Repeat, Compass, Gift } from "lucide-react";
+import { Trophy, Award, History, Repeat, Compass, Gift, Hourglass } from "lucide-react";
 import { ArrowRight } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -31,6 +31,7 @@ export default function DashboardPage() {
   }
 
   const userTransactions = transactionHistory.filter(t => t.userId === currentUser.id);
+  const hasHolding = Object.values(currentUser.holdingPurse).some(v => v > 0);
 
   return (
     <div className="container mx-auto p-0">
@@ -95,6 +96,28 @@ export default function DashboardPage() {
                   </li>
                 ))}
               </ul>
+              {hasHolding && (
+                <div className="mt-4 pt-4 border-t border-dashed">
+                  <p className="text-sm font-semibold text-muted-foreground flex items-center gap-2 mb-2"><Hourglass className="w-4 h-4" /> In Holding</p>
+                  <ul className="space-y-2">
+                    {currencyDefinitions.map(currency => {
+                      const holdingAmount = currentUser.holdingPurse[currency.name.toLowerCase() as keyof typeof currentUser.holdingPurse];
+                      if (holdingAmount > 0) {
+                        return (
+                          <li key={`${currency.name}-holding`} className="flex items-center justify-between text-sm">
+                            <div className="flex items-center gap-3 text-muted-foreground">
+                              <currency.icon className="w-4 h-4" />
+                              <span className="font-semibold">{currency.name}</span>
+                            </div>
+                            <span className="font-mono">{holdingAmount.toLocaleString()}</span>
+                          </li>
+                        )
+                      }
+                      return null;
+                    })}
+                  </ul>
+                </div>
+              )}
             </CardContent>
              <CardFooter>
               <Button asChild className="w-full" variant="outline">
@@ -146,7 +169,8 @@ export default function DashboardPage() {
                     .slice(0, 10)
                     .map((transaction) => {
                       const isEarn = ['verified', 'auto-verified'].includes(transaction.status);
-                      const isSpend = ['spend', 'setback'].includes(transaction.status);
+                      const isSpend = transaction.status === 'spend';
+                      const isSetback = transaction.status === 'setback';
                       const isPending = transaction.status === 'pending';
                       const isAward = transaction.status === 'awarded';
                       const asset = isAward && transaction.assetId ? digitalAssets.find(da => da.id === transaction.assetId) : null;
@@ -169,11 +193,11 @@ export default function DashboardPage() {
                                   variant="outline"
                                   className={cn(
                                     isEarn && "text-green-600 border-green-600/50",
-                                    isSpend && "text-red-600 border-red-600/50",
+                                    (isSpend || isSetback) && "text-red-600 border-red-600/50",
                                     isPending && "text-yellow-600 border-yellow-600/50"
                                   )}
                                 >
-                                  {isEarn ? '+' : isSpend ? '-' : ''}{transaction.change.amount.toLocaleString()} {transaction.change.currencyName}
+                                  {isEarn ? '+' : (isSpend || isSetback) ? '-' : ''}{transaction.change.amount.toLocaleString()} {transaction.change.currencyName}
                                 </Badge>
                               ) : isAward && asset ? (
                                 <Badge variant="outline" className="text-purple-600 border-purple-600/50">

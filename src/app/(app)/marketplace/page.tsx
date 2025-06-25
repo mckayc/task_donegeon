@@ -39,12 +39,8 @@ export default function MarketplacePage() {
           {marketplaceMarkets.map((market) => (
             <Link
               key={market.id}
-              href={market.status === 'open' ? `/marketplace/${market.id}` : '#'}
-              className={cn(
-                "block transition-all hover:scale-105",
-                market.status === 'locked' && "pointer-events-none"
-              )}
-              aria-disabled={market.status === 'locked'}
+              href={`/marketplace/${market.id}`}
+              className="block transition-all hover:scale-105"
             >
               <Card
                 className={cn(

@@ -46,6 +46,7 @@ export interface MarketItem {
   };
   image: string;
   aiHint: string;
+  isDigital: boolean;
 }
 
 export interface InventoryItem extends MarketItem {
@@ -59,16 +60,12 @@ export interface InventoryItem extends MarketItem {
   };
 }
 
-export interface Market {
-  id: string;
-  name: string;
-  description: string;
-  status: 'open' | 'locked';
-  unlockCondition?: string;
-  items: MarketItem[];
-}
-
-export interface MarketplaceMarket extends Market {
+export interface MarketplaceMarket {
+    id: string;
+    name: string;
+    description: string;
+    status: 'open' | 'locked';
+    unlockCondition?: string;
     icon: LucideIcon;
 }
 
@@ -87,7 +84,7 @@ export type Purse = {
 }
 
 export interface User {
-  id: string;
+  id:string;
   name: string;
   email: string;
   role: 'Donegeon Master' | 'Bailiff' | 'Adventurer';
@@ -112,7 +109,7 @@ export interface TransactionHistoryEntry {
   date: Date;
   userId: string;
   description: string;
-  status: 'verified' | 'pending' | 'retry' | 'setback' | 'spend' | 'auto-verified' | 'awarded';
+  status: 'verified' | 'pending' | 'retry' | 'setback' | 'spend' | 'auto-verified' | 'awarded' | 'cancelled';
   change?: {
     currencyName: CurrencyDefinition['name'];
     amount: number;
@@ -136,7 +133,7 @@ export interface AdventurerStoreItem {
 export const users: User[] = [
     { id: '1', name: 'DM Dave', email: 'dave@example.com', role: 'Donegeon Master', avatar: 'https://i.pravatar.cc/150?u=dm-dave', rankId: 'rank-30', purse: { gold: 100000, gems: 50000, stardust: 200000 }, holdingPurse: { gold: 0, gems: 0, stardust: 0 } },
     { id: '2', name: 'Moderator Mary', email: 'mary@example.com', role: 'Bailiff', avatar: 'https://i.pravatar.cc/150?u=mod-mary', rankId: 'rank-15', purse: { gold: 15000, gems: 2500, stardust: 50000 }, holdingPurse: { gold: 0, gems: 0, stardust: 0 } },
-    { id: '3', name: 'Adventurer Alex', email: 'alex@example.com', role: 'Adventurer', avatar: 'https://i.pravatar.cc/150?u=adv-alex', rankId: 'rank-5', purse: { gold: 815, gems: 335, stardust: 7800 }, holdingPurse: { gold: 0, gems: 0, stardust: 350 } },
+    { id: '3', name: 'Adventurer Alex', email: 'alex@example.com', role: 'Adventurer', avatar: 'https://i.pravatar.cc/150?u=adv-alex', rankId: 'rank-5', purse: { gold: 815, gems: 285, stardust: 7800 }, holdingPurse: { gold: 0, gems: 50, stardust: 350 } },
     { id: '4', name: 'Adventurer Beth', email: 'beth@example.com', role: 'Adventurer', avatar: 'https://i.pravatar.cc/150?u=adv-beth', rankId: 'rank-2', purse: { gold: 450, gems: 50, stardust: 1200 }, holdingPurse: { gold: 0, gems: 0, stardust: 250 } },
 ];
 
@@ -304,6 +301,7 @@ export const inventoryItems: InventoryItem[] = [
     availability: 'available',
     markets: ["The Royal Scribe's Pass"],
     limit: { period: 'daily', amount: 1 },
+    isDigital: true,
   },
   {
     id: '2',
@@ -317,6 +315,7 @@ export const inventoryItems: InventoryItem[] = [
     availability: 'available',
     markets: ["The Wayfarer's Guild"],
     limit: { period: 'weekly', amount: 1 },
+    isDigital: false,
   },
   {
     id: '3',
@@ -330,6 +329,7 @@ export const inventoryItems: InventoryItem[] = [
     availability: 'available',
     markets: ["The Apothecary's Confections"],
     limit: { period: 'none', amount: null },
+    isDigital: false,
   },
   {
     id: '4',
@@ -343,24 +343,21 @@ export const inventoryItems: InventoryItem[] = [
     availability: 'unavailable',
     markets: ["The Royal Scribe's Pass"],
     limit: { period: 'none', amount: null },
-  },
-];
-
-export const markets: Market[] = [
-  {
-    id: '1',
-    name: 'General Store',
-    description: 'Basic goods for the everyday adventurer.',
-    status: 'open',
-    items: inventoryItems,
+    isDigital: true,
   },
   {
-    id: '2',
-    name: "The Dragon's Hoard",
-    description: 'A collection of rare artifacts, available only to the most accomplished heroes.',
-    status: 'locked',
-    unlockCondition: 'Complete 10 Ventures to unlock.',
-    items: [],
+    id: '5',
+    name: '$1 Cash',
+    description: 'One real US dollar, delivered by your DM.',
+    cost: { currencyName: 'Gold', amount: 10 },
+    image: 'https://placehold.co/600x400.png',
+    aiHint: 'stack of cash',
+    stock: 100,
+    notifyAt: 20,
+    availability: 'available',
+    markets: ["The Royal Treasury"],
+    limit: { period: 'none', amount: null },
+    isDigital: false,
   },
 ];
 
@@ -372,15 +369,13 @@ export const marketplaceMarkets: MarketplaceMarket[] = [
     status: 'locked',
     unlockCondition: "Complete all Daily Duties to unlock.",
     icon: ScrollText,
-    items: [],
   },
   {
     id: 'treasury',
     name: "The Royal Treasury",
-    description: "Deposit and manage your earnings.",
+    description: "Exchange Gold for real-world money.",
     status: 'open',
     icon: Banknote,
-    items: [],
   },
   {
     id: 'apothecary',
@@ -388,7 +383,6 @@ export const marketplaceMarkets: MarketplaceMarket[] = [
     description: "Purchase sweet treats and elixirs.",
     status: 'open',
     icon: FlaskConical,
-    items: [],
   },
   {
     id: 'artificer',
@@ -396,7 +390,6 @@ export const marketplaceMarkets: MarketplaceMarket[] = [
     description: "Acquire rare and beautiful digital assets.",
     status: 'open',
     icon: Brush,
-    items: [],
   },
   {
     id: 'wayfarer',
@@ -405,7 +398,6 @@ export const marketplaceMarkets: MarketplaceMarket[] = [
     status: 'locked',
     unlockCondition: "Save up 500 Gems to unlock.",
     icon: Map,
-    items: [],
   }
 ];
 
@@ -442,6 +434,7 @@ export const transactionHistory: TransactionHistoryEntry[] = [
   { id: 'th-alex-6', date: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000), userId: '3', taskId: null, description: 'Penalty: Left adventuring gear in the hall.', status: 'setback', change: { currencyName: 'Gold', amount: 20 } },
   { id: 'th-beth-1', date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), userId: '4', taskId: '1', description: 'Completed Quest: Clean Your Lair', status: 'pending', change: { currencyName: 'Stardust', amount: 250 } },
   { id: 'th-beth-2', date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), userId: '4', taskId: null, description: 'Surprise for exceptional teamwork', status: 'awarded', assetId: 'da-surprise-1' },
+  { id: 'th-alex-7', date: new Date(Date.now() - 12 * 60 * 60 * 1000), userId: '3', taskId: null, description: 'Purchased: Ice Cream Elixir', status: 'pending', change: { currencyName: 'Gems', amount: 50 } },
 ];
 
 export const adventurerStoreItems: AdventurerStoreItem[] = [

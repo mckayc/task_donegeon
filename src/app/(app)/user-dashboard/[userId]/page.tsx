@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { users, transactionHistory, type TransactionHistoryEntry, digitalAssets } from "@/lib/data";
 import { cn } from "@/lib/utils";
-import { Check, RefreshCcw, ArrowLeft, Gift } from "lucide-react";
+import { Check, RefreshCcw, ArrowLeft, Gift, X } from "lucide-react";
 
 function getStatusBadgeVariant(status: TransactionHistoryEntry['status']) {
   switch (status) {
@@ -32,6 +32,7 @@ function getStatusBadgeVariant(status: TransactionHistoryEntry['status']) {
       return 'secondary';
     case 'setback':
     case 'spend':
+    case 'cancelled':
       return 'destructive';
     case 'retry':
       return 'outline';
@@ -105,6 +106,9 @@ export default function UserHistoryPage({ params }: { params: { userId: string }
               <TableBody>
                 {userTransactions.map((transaction) => {
                   const asset = transaction.assetId ? digitalAssets.find(da => da.id === transaction.assetId) : null;
+                  const isPendingTask = transaction.status === 'pending' && transaction.description.startsWith('Completed Quest:');
+                  const isPendingPurchase = transaction.status === 'pending' && transaction.description.startsWith('Purchased:');
+
                   return (
                   <TableRow key={transaction.id}>
                     <TableCell className="text-muted-foreground text-xs">
@@ -136,7 +140,7 @@ export default function UserHistoryPage({ params }: { params: { userId: string }
                         ) : null}
                     </TableCell>
                     <TableCell className="text-right">
-                      {transaction.status === 'pending' && (
+                      {isPendingTask && (
                         <div className="flex gap-2 justify-end">
                           <Button size="sm" variant="outline" disabled>
                             <Check className="mr-2 h-4 w-4" />
@@ -145,6 +149,18 @@ export default function UserHistoryPage({ params }: { params: { userId: string }
                           <Button size="sm" variant="ghost" disabled>
                             <RefreshCcw className="mr-2 h-4 w-4" />
                             Retry
+                          </Button>
+                        </div>
+                      )}
+                       {isPendingPurchase && (
+                        <div className="flex gap-2 justify-end">
+                          <Button size="sm" variant="outline" disabled>
+                            <Check className="mr-2 h-4 w-4" />
+                            Approve
+                          </Button>
+                          <Button size="sm" variant="destructive" disabled>
+                            <X className="mr-2 h-4 w-4" />
+                            Reject
                           </Button>
                         </div>
                       )}
