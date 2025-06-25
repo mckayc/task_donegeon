@@ -73,8 +73,11 @@ export default function HelpPage() {
               </AccordionItem>
               <AccordionItem value="item-5">
                 <AccordionTrigger>Purse & Currencies</AccordionTrigger>
-                <AccordionContent>
-                  Your purse holds your earned <strong>Gold, Gems, and Stardust</strong>. Gold is common, Gems are rarer, and Stardust is for truly epic achievements.
+                <AccordionContent className="space-y-2">
+                  <p>Your purse holds three types of currency, each with a different purpose:</p>
+                  <p><strong>Gold:</strong> Primarily earned from special <strong>Ventures</strong>, Gold is used to purchase tangible, real-world rewards from the Marketplace, like toys or special items.</p>
+                  <p><strong>Gems:</strong> Also earned from <strong>Ventures</strong>, Gems are typically used to purchase experiences, activities, or special privileges, like a trip to the park or choosing the family movie.</p>
+                  <p><strong>Stardust:</strong> The most common currency, earned from completing daily <strong>Duties</strong>. Stardust is used for in-game or digital purchases, like extra screen time or digital avatar items.</p>
                 </AccordionContent>
               </AccordionItem>
                <AccordionItem value="item-6">
@@ -105,7 +108,7 @@ export default function HelpPage() {
                 <AccordionContent className="space-y-2 pl-2">
                     <p><strong>Start Simple:</strong> Begin with a few essential daily or weekly Duties to build a routine.</p>
                     <p><strong>Reward Behavior:</strong> Use Ventures to incentivize specific goals, like reading a book or helping with a big project.</p>
-                    <p><strong>Keep it Balanced:</strong> Make Gold the primary reward for most tasks, saving Gems and Stardust for truly challenging Ventures.</p>
+                    <p><strong>Keep it Balanced:</strong> Make Stardust the primary reward for most daily tasks, saving Gold and Gems for truly challenging Ventures.</p>
                     <p><strong>Get Creative:</strong> Use the "Suggest Tasks" AI feature in the Duties/Ventures pages to get new ideas tailored to your adventurers.</p>
                     <p><strong>Stay Engaged:</strong> Regularly check the User Dashboard and Approvals pages to verify tasks and keep the game economy flowing.</p>
                 </AccordionContent>
@@ -113,8 +116,8 @@ export default function HelpPage() {
               <AccordionItem value="item-2">
                 <AccordionTrigger>For Adventurers</AccordionTrigger>
                 <AccordionContent className="space-y-2 pl-2">
-                    <p><strong>Consistency is Key:</strong> Focus on completing your daily Duties to build up a steady income of Gold.</p>
-                    <p><strong>Save Up:</strong> Don't spend all your currency at once! Save for that big-ticket item you really want from the Marketplace.</p>
+                    <p><strong>Consistency is Key:</strong> Focus on completing your daily Duties to build up a steady income of Stardust.</p>
+                    <p><strong>Save Up:</strong> Don't spend all your currency at once! Save your Gold and Gems for that big-ticket item you really want from the Marketplace.</p>
                     <p><strong>Become an Entrepreneur:</strong> Have a skill or a fun idea? Open your own stall in the Marketplace to sell goods or services to other players.</p>
                     <p><strong>Aim for the Top:</strong> Keep an eye on the Ranks page to see what you need to achieve your next level of glory!</p>
                 </AccordionContent>
