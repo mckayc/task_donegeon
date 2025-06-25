@@ -51,7 +51,7 @@ export default function UserDashboardPage() {
         </h1>
       </div>
       
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-start">
+      <div className="flex flex-col gap-8">
         {users.filter(u => u.role === 'Adventurer').map((user) => {
           const userTransactions = transactionHistory
             .filter((t) => t.userId === user.id)
