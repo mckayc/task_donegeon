@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -43,7 +44,7 @@ export default function CurrenciesPage() {
         <CardHeader>
           <CardTitle>Manage Currencies</CardTitle>
           <CardDescription>
-            Add, edit, or remove currencies available for rewards.
+            Add, edit, or remove currencies available for rewards. Core currencies cannot be deleted.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -77,7 +78,7 @@ export default function CurrenciesPage() {
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuItem>Edit</DropdownMenuItem>
-                        <DropdownMenuItem>Delete</DropdownMenuItem>
+                        <DropdownMenuItem disabled={!currency.isDeletable}>Delete</DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>

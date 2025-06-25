@@ -1,4 +1,6 @@
+
 import Image from "next/image";
+import Link from "next/link";
 import {
   Card,
   CardContent,
@@ -8,9 +10,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { currencies, tasks, earnedAssets, type Task } from "@/lib/data";
+import { currencies, tasks, earnedAssets, users, ranks, digitalAssets, type Task } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
-import { Trophy } from "lucide-react";
+import { Trophy, Award } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 function QuestItem({ task }: { task: Task }) {
   return (
@@ -33,6 +36,11 @@ export default function QuestsPage() {
   const activeDuties = tasks.filter(task => task.status === 'active' && task.type === 'duty');
   const activeVentures = tasks.filter(task => task.status === 'active' && task.type === 'venture');
   
+  // For demo purposes, let's assume the current user is Adventurer Alex
+  const currentUser = users.find(u => u.id === '3');
+  const currentRank = ranks.find(r => r.id === currentUser?.rankId);
+  const rankAsset = digitalAssets.find(da => da.id === currentRank?.assetId);
+
   return (
     <div className="container mx-auto p-0">
       <h1 className="text-4xl font-headline font-bold mb-2">Your Quests</h1>
@@ -42,6 +50,41 @@ export default function QuestsPage() {
         
         {/* Left Column */}
         <div className="lg:col-span-1 space-y-8">
+
+           {currentRank && (
+            <Card className="shadow-lg">
+              <CardHeader>
+                <CardTitle className="font-headline flex items-center gap-2">
+                  <Award />
+                  Rank
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-col items-center text-center gap-4">
+                {rankAsset && (
+                  <Image
+                    alt={currentRank.name}
+                    className="rounded-full border-4 border-primary"
+                    height="100"
+                    width="100"
+                    src={rankAsset.image}
+                    data-ai-hint={rankAsset.aiHint}
+                  />
+                )}
+                <div className="space-y-1">
+                   <p className="text-2xl font-bold font-headline">{currentRank.name}</p>
+                   <p className="text-sm text-muted-foreground">Level {currentRank.level}</p>
+                </div>
+              </CardContent>
+              <CardFooter>
+                 <Button asChild className="w-full">
+                  <Link href="/ranks">
+                    View All Ranks <ArrowRight className="ml-2" />
+                  </Link>
+                </Button>
+              </CardFooter>
+            </Card>
+          )}
+
           <Card className="shadow-lg">
             <CardHeader>
               <CardTitle className="font-headline">

@@ -1,3 +1,4 @@
+
 'use client';
 import Link from "next/link";
 import { usePathname } from 'next/navigation'
@@ -17,7 +18,7 @@ import { AppLogo } from "@/components/app-logo";
 import { Button } from "@/components/ui/button";
 import { UserNav } from "@/components/user-nav";
 import { useIsAdmin } from "@/hooks/use-is-admin";
-import { ClipboardList, Repeat, Compass, Coins, Store, Shield, LogOut, Image, Users, ShoppingCart, Archive, LayoutList } from "lucide-react";
+import { ClipboardList, Repeat, Compass, Coins, Store, Shield, LogOut, Image, Users, ShoppingCart, Archive, LayoutList, Award } from "lucide-react";
 import * as Accordion from "@radix-ui/react-accordion";
 import { cn } from "@/lib/utils";
 
@@ -115,6 +116,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                             </Accordion.Content>
                           </Accordion.Item>
                         </Accordion.Root>
+                        <SidebarMenuButton asChild isActive={pathname === '/admin/ranks'}>
+                           <Link href="/admin/ranks">
+                            <Award />
+                            <span>Ranks</span>
+                          </Link>
+                        </SidebarMenuButton>
                         <SidebarMenuButton asChild isActive={pathname === '/admin/digital-assets'}>
                            <Link href="/admin/digital-assets">
                             <Image />

@@ -1,3 +1,4 @@
+
 import type { LucideIcon } from "lucide-react";
 import { Coins, Gem, Star, ScrollText, Banknote, FlaskConical, Brush, Map } from 'lucide-react';
 
@@ -5,6 +6,7 @@ export interface Currency {
   name: string;
   amount: number;
   icon: LucideIcon;
+  isDeletable: boolean;
 }
 
 export interface Task {
@@ -58,7 +60,7 @@ export interface MarketplaceMarket extends Market {
 export interface DigitalAsset {
   id: string;
   name: string;
-  category: 'Avatar' | 'Badge' | 'Item';
+  category: 'Avatar' | 'Badge' | 'Item' | 'Rank';
   image: string;
   aiHint: string;
 }
@@ -69,14 +71,47 @@ export interface User {
   email: string;
   role: 'Donegeon Master' | 'Bailiff' | 'Adventurer';
   avatar: string;
+  rankId: string;
+}
+
+export interface Rank {
+  id: string;
+  name: string;
+  level: number;
+  requiredGold: number;
+  requiredGems: number;
+  requiredStardust: number;
+  assetId: string;
 }
 
 export const users: User[] = [
-    { id: '1', name: 'DM Dave', email: 'dave@example.com', role: 'Donegeon Master', avatar: 'https://i.pravatar.cc/150?u=dm-dave' },
-    { id: '2', name: 'Moderator Mary', email: 'mary@example.com', role: 'Bailiff', avatar: 'https://i.pravatar.cc/150?u=mod-mary' },
-    { id: '3', name: 'Adventurer Alex', email: 'alex@example.com', role: 'Adventurer', avatar: 'https://i.pravatar.cc/150?u=adv-alex' },
-    { id: '4', name: 'Adventurer Beth', email: 'beth@example.com', role: 'Adventurer', avatar: 'https://i.pravatar.cc/150?u=adv-beth' },
+    { id: '1', name: 'DM Dave', email: 'dave@example.com', role: 'Donegeon Master', avatar: 'https://i.pravatar.cc/150?u=dm-dave', rankId: 'rank-30' },
+    { id: '2', name: 'Moderator Mary', email: 'mary@example.com', role: 'Bailiff', avatar: 'https://i.pravatar.cc/150?u=mod-mary', rankId: 'rank-15' },
+    { id: '3', name: 'Adventurer Alex', email: 'alex@example.com', role: 'Adventurer', avatar: 'https://i.pravatar.cc/150?u=adv-alex', rankId: 'rank-5' },
+    { id: '4', name: 'Adventurer Beth', email: 'beth@example.com', role: 'Adventurer', avatar: 'https://i.pravatar.cc/150?u=adv-beth', rankId: 'rank-2' },
 ];
+
+const rankNames = [
+  "Fledgling", "Novice", "Apprentice", "Initiate", "Journeyman", "Squire", 
+  "Adept", "Knight-Aspirant", "Artisan", "Veteran", "Knight", "Ranger", 
+  "Guardian", "Vanguard", "Sentinel", "Champion", "Master", "Warlord", 
+  "Justicar", "Paragon", "Elite", "Conqueror", "Legend", "Mythic", 
+  "Titan", "Demigod", "Ascendant", "Celestial", "Ethereal", "The Donegeon"
+];
+
+export const ranks: Rank[] = rankNames.map((name, i) => {
+    const level = i + 1;
+    return {
+        id: `rank-${level}`,
+        name: name,
+        level: level,
+        requiredGold: level * 250 + (level > 10 ? (level - 10) * 500 : 0) + (level > 20 ? (level - 20) * 2000 : 0),
+        requiredGems: level * 50 + (level > 10 ? (level - 10) * 100 : 0) + (level > 20 ? (level - 20) * 400 : 0),
+        requiredStardust: level * 500 + (level > 10 ? (level - 10) * 1000 : 0) + (level > 20 ? (level - 20) * 4000 : 0),
+        assetId: `da-rank-${Math.min(level, 5)}` // Use 5 sample assets for all ranks for now
+    }
+});
+
 
 export const digitalAssets: DigitalAsset[] = [
   { id: 'da1', name: 'Knight Helmet', category: 'Avatar', image: 'https://placehold.co/200x200.png', aiHint: 'knight helmet' },
@@ -87,6 +122,12 @@ export const digitalAssets: DigitalAsset[] = [
   { id: 'da6', name: 'Master of Chores', category: 'Badge', image: 'https://placehold.co/200x200.png', aiHint: 'gold medal' },
   { id: 'da7', name: 'Health Potion', category: 'Item', image: 'https://placehold.co/200x200.png', aiHint: 'health potion' },
   { id: 'da8', name: 'Magic Key', category: 'Item', image: 'https://placehold.co/200x200.png', aiHint: 'glowing key' },
+  // Rank assets
+  { id: 'da-rank-1', name: 'Fledgling Crest', category: 'Rank', image: 'https://placehold.co/200x200.png', aiHint: 'bronze shield' },
+  { id: 'da-rank-2', name: 'Adept Crest', category: 'Rank', image: 'https://placehold.co/200x200.png', aiHint: 'iron shield' },
+  { id: 'da-rank-3', name: 'Knightly Crest', category: 'Rank', image: 'https://placehold.co/200x200.png', aiHint: 'steel shield' },
+  { id: 'da-rank-4', name: 'Champion Crest', category: 'Rank', image: 'https://placehold.co/200x200.png', aiHint: 'silver shield' },
+  { id: 'da-rank-5', name: 'Legendary Crest', category: 'Rank', image: 'https://placehold.co/200x200.png', aiHint: 'gold shield' },
 ];
 
 export const earnedAssets: DigitalAsset[] = [
@@ -96,9 +137,9 @@ export const earnedAssets: DigitalAsset[] = [
 ];
 
 export const currencies: Currency[] = [
-  { name: 'Gold', amount: 1250, icon: Coins },
-  { name: 'Gems', amount: 300, icon: Gem },
-  { name: 'Stardust', amount: 5000, icon: Star },
+  { name: 'Gold', amount: 1250, icon: Coins, isDeletable: false },
+  { name: 'Gems', amount: 300, icon: Gem, isDeletable: false },
+  { name: 'Stardust', amount: 5000, icon: Star, isDeletable: false },
 ];
 
 export const tasks: Task[] = [
