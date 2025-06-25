@@ -17,7 +17,7 @@ import {
 import { AppLogo } from "@/components/app-logo";
 import { UserNav } from "@/components/user-nav";
 import { useCurrentUser } from '@/hooks/use-current-user';
-import { ClipboardList, Repeat, Compass, Coins, Store, Shield, LogOut, Image, Users, ShoppingCart, Archive, LayoutList, Award, Activity, LayoutDashboard, Settings, CheckCheck, HelpCircle, Gift, ShieldOff, Palette, ClipboardCheck } from "lucide-react";
+import { ClipboardList, Repeat, Compass, Coins, Store, Shield, LogOut, Image, Users, ShoppingCart, Archive, LayoutList, Award, Activity, LayoutDashboard, Settings, CheckCheck, HelpCircle, Gift, ShieldOff, Palette, ClipboardCheck, CalendarDays } from "lucide-react";
 import * as Accordion from "@radix-ui/react-accordion";
 import { cn } from "@/lib/utils";
 
@@ -45,6 +45,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   <Link href="/dashboard">
                     <LayoutDashboard />
                     <span>Dashboard</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+               <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={pathname === '/calendar'}>
+                  <Link href="/calendar">
+                    <CalendarDays />
+                    <span>Activity Calendar</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -147,6 +155,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                       </Accordion.Trigger>
                       <Accordion.Content className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
                         <div className="pl-8 flex flex-col gap-1 py-1">
+                          <SidebarMenuButton asChild isActive={pathname === '/admin/activity-calendar'}>
+                             <Link href="/admin/activity-calendar">
+                              <CalendarDays />
+                              <span>Activity Calendar</span>
+                            </Link>
+                          </SidebarMenuButton>
                           <SidebarMenuButton asChild isActive={pathname === '/admin/duties'}>
                              <Link href="/admin/duties">
                               <Repeat />
