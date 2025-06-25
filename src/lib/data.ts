@@ -103,7 +103,7 @@ export interface TransactionHistoryEntry {
   date: Date;
   userId: string;
   description: string;
-  status: 'verified' | 'pending' | 'retry' | 'hit' | 'spend' | 'auto-verified';
+  status: 'verified' | 'pending' | 'retry' | 'setback' | 'spend' | 'auto-verified';
   change: {
     currencyName: CurrencyDefinition['name'];
     amount: number;
@@ -414,7 +414,7 @@ export const transactionHistory: TransactionHistoryEntry[] = [
   { id: 'th-alex-3', date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), userId: '3', taskId: null, description: 'Purchased: Sword of Digital Power', status: 'spend', change: { currencyName: 'Stardust', amount: 2000 } },
   { id: 'th-alex-4', date: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000), userId: '3', taskId: 'duty-4', description: 'Completed Quest: Feed the Familiars', status: 'auto-verified', change: { currencyName: 'Stardust', amount: 150 } },
   { id: 'th-alex-5', date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), userId: '3', taskId: 'venture-2', description: 'Completed Quest: Library Book Expedition', status: 'auto-verified', change: { currencyName: 'Gems', amount: 25 } },
-  { id: 'th-alex-6', date: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000), userId: '3', taskId: null, description: 'Penalty: Left adventuring gear in the hall.', status: 'hit', change: { currencyName: 'Gold', amount: 20 } },
+  { id: 'th-alex-6', date: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000), userId: '3', taskId: null, description: 'Setback: Left adventuring gear in the hall.', status: 'setback', change: { currencyName: 'Gold', amount: 20 } },
   { id: 'th-beth-1', date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), userId: '4', taskId: '1', description: 'Completed Quest: Clean Your Lair', status: 'pending', change: { currencyName: 'Stardust', amount: 250 } },
 ];
 

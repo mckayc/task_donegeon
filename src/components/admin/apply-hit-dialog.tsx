@@ -46,7 +46,7 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export function ApplyHitDialog({ user }: { user: User }) {
+export function ApplySetbackDialog({ user }: { user: User }) {
   const [open, setOpen] = useState(false);
 
   const form = useForm<FormValues>({
@@ -61,14 +61,14 @@ export function ApplyHitDialog({ user }: { user: User }) {
   // NOTE: This is a prototype. The form submission does not actually
   // modify data. In a real application, this would call a server action.
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log("Applying Hit:", {
+    console.log("Applying Setback:", {
       userId: user.id,
       ...data,
     });
     // Here you would typically call a server action to update the database
     // and revalidate the page data.
     alert(
-      `Prototype: Applied a hit of ${data.amount} ${data.currency} to ${user.name}. Check the console for details.`
+      `Prototype: Applied a setback of ${data.amount} ${data.currency} to ${user.name}. Check the console for details.`
     );
     setOpen(false);
     form.reset();
@@ -79,12 +79,12 @@ export function ApplyHitDialog({ user }: { user: User }) {
       <DialogTrigger asChild>
         <Button variant="destructive" size="sm">
           <ShieldMinus className="mr-2 h-4 w-4" />
-          Apply Hit
+          Apply Setback
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Apply Hit to {user.name}</DialogTitle>
+          <DialogTitle>Apply Setback to {user.name}</DialogTitle>
           <DialogDescription>
             Deduct from an adventurer's purse for a rule infraction. This will
             appear in their transaction history.
@@ -148,7 +148,7 @@ export function ApplyHitDialog({ user }: { user: User }) {
             />
             <DialogFooter>
               <Button type="submit" variant="destructive">
-                Confirm Hit
+                Confirm Setback
               </Button>
             </DialogFooter>
           </form>

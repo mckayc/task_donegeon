@@ -81,7 +81,7 @@ export default function HelpPage() {
                 </AccordionContent>
               </AccordionItem>
                <AccordionItem value="item-6">
-                <AccordionTrigger>Hits</AccordionTrigger>
+                <AccordionTrigger>Setbacks</AccordionTrigger>
                 <AccordionContent>
                   A penalty applied by a DM or Bailiff for a rule infraction, which deducts currency from an Adventurer's purse.
                 </AccordionContent>

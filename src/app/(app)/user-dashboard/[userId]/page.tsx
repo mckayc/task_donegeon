@@ -30,7 +30,7 @@ function getStatusBadgeVariant(status: TransactionHistoryEntry['status']) {
       return 'default';
     case 'pending':
       return 'secondary';
-    case 'hit':
+    case 'setback':
     case 'spend':
       return 'destructive';
     case 'retry':
@@ -117,10 +117,10 @@ export default function UserHistoryPage({ params }: { params: { userId: string }
                     <TableCell>
                       <span className={cn(
                         (transaction.status === 'verified' || transaction.status === 'auto-verified') && "text-green-600",
-                        (transaction.status === 'spend' || transaction.status === 'hit') && "text-red-600",
+                        (transaction.status === 'spend' || transaction.status === 'setback') && "text-red-600",
                         transaction.status === 'pending' && "text-yellow-600"
                       )}>
-                        {['verified', 'auto-verified'].includes(transaction.status) ? '+' : ['spend', 'hit'].includes(transaction.status) ? '-' : ''}
+                        {['verified', 'auto-verified'].includes(transaction.status) ? '+' : ['spend', 'setback'].includes(transaction.status) ? '-' : ''}
                         {transaction.change.amount} {transaction.change.currencyName}
                       </span>
                     </TableCell>

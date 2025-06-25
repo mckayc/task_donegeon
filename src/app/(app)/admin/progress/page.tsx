@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/table";
 import { users, ranks } from "@/lib/data";
 import { Coins, Gem, Star, ShieldMinus } from "lucide-react";
-import { ApplyHitDialog } from "@/components/admin/apply-hit-dialog";
+import { ApplySetbackDialog } from "@/components/admin/apply-hit-dialog";
 
 export default function ProgressPage() {
   const getRank = (rankId: string) => ranks.find((r) => r.id === rankId);
@@ -35,7 +35,7 @@ export default function ProgressPage() {
         <CardHeader>
           <CardTitle>Progress Overview</CardTitle>
           <CardDescription>
-            Track adventurer ranks and purses. Apply penalties for missteps.
+            Track adventurer ranks and purses. Apply setbacks for missteps.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -98,7 +98,7 @@ export default function ProgressPage() {
                       </div>
                     </TableCell>
                     <TableCell>
-                       <ApplyHitDialog user={user} />
+                       <ApplySetbackDialog user={user} />
                     </TableCell>
                   </TableRow>
                 );

@@ -146,7 +146,7 @@ export default function DashboardPage() {
                     .slice(0, 10)
                     .map((transaction) => {
                       const isEarn = ['verified', 'auto-verified'].includes(transaction.status);
-                      const isSpend = ['spend', 'hit'].includes(transaction.status);
+                      const isSpend = ['spend', 'setback'].includes(transaction.status);
                       const isPending = transaction.status === 'pending';
                       return (
                         <li key={transaction.id} className="flex items-center justify-between text-sm">
